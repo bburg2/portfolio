@@ -3,16 +3,17 @@ title: "assignment_1.1"
 output: html_document
 date: '2022-05-02'
 ---
-
-```{r setup}
+###Assignment 1.1
+```{r setup, message=FALSE}
 #install.packages(readxl)
 #install.packages(tidyverse)
 library(readxl)
 library(tidyverse)
+library(here)
 ```
 
-```{r data inladen}
-data <- read_excel("./data/CE.LIQ.FLOW.062_Tidydata.xlsx")
+```{r data inladen, include=FALSE}
+data <- read_excel(here("data","CE.LIQ.FLOW.062_Tidydata.xlsx"))
 ```
 RawData: dbl
 compName: chr
@@ -51,4 +52,33 @@ Nog niet hellemaal duidelijk hoe jitter werkt.
 
 (G) The positive control for this experiments is Ethanol. (H) The negative control for this experiment is S-medium.
 
+I:
+Eerst testen of de data normaal verdeeld is per stof doormiddel van een shapiro-wilk.
+Vervolgens een levene-test uitvoeren om te testen voor variatie.
+Hierna kan een T-test uitgevoerd worden ten over de positieve controle (ethanol) met elke stof.
+
+```{r}
+#data filteren op de negatieve controle
+data_negative <- data %>% filter(data$expType == "controlNegative") 
+
+#De gemiddelde berekenen van het rawdata colom van de negative controle
+mean_negative <- mean(data_negative$RawData, na.rm = TRUE) 
+
+#De data normaliseren op basis van het gemiddelde van de negatieve controle
+data$RawData <- data$RawData - mean_negative
+
+#grafiek maken
+ggplot(data = data, aes(x = log10(compConcentration), y = RawData)) +
+  geom_point(aes(color = compName, 
+                 shape = compName, position = "jitter"))+
+  labs(title = "Number of offspring per concentration Normalised",
+       y = "Number of offspring",
+       x = "log10 Concentration of compound") +
+  theme_minimal()
+
+
+```
+Ik vermoed dat ik of een foute negatieve controle heb gebruikt of dat ik de data four heb genormaliseerd
+
+K: Nu is de data van de negative controle er afgehaald, wat altijd de bedoeling want de negatieve controle zou geen effect moeten hebben
 
