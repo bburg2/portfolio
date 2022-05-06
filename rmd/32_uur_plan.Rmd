@@ -1,0 +1,15 @@
+---
+title: "32_uur_plan"
+output: html_document
+date: '2022-05-06'
+---
+
+### Wat wil ik?
+
+Ik zou later graag iets met next-generation sequencingen willen doen.
+Het lijkt me dan leuk om een deel in het lab te staan maar ook een deel de data te verwerken.
+
+### wat heb ik hiervoor nodig?
+
+IK ben gaan zoeken naar vacatures die iets te maken hebben met NGS.
+Vaak zie ik Python langs komen, dus ik wel me mischien verdiepen in Python maar ik weet het nog niet zeker.

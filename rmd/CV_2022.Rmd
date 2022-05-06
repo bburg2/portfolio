@@ -36,7 +36,7 @@ De labtechnieken die ik in de afgelopen jaren heb toegepast:
 
 * Long Read DNA sequencing met behulp van de minION
 
-* 
+* PCR
 
 
 Overig
