@@ -1,0 +1,16 @@
+number;name;amount;sample_name;total_volume
+1;Campylobacter coli;0,5;HU2_MOCK2;21
+2;Citrobacter freundii;2;HU2_MOCK2;21
+3;Enterococcus casseliflavus;0,6;HU2_MOCK2;21
+4;Enterococcus durans;1;HU2_MOCK2;21
+5;Enterococcus hirae;2;HU2_MOCK2;21
+6;Klebsiella oxytoca;0,5;HU2_MOCK2;21
+7;Yersinia kristensenii;1,8;HU2_MOCK2;21
+8;Legionella jordanis;1,2;HU2_MOCK2;21
+9;Legionella longbeachae;1,8;HU2_MOCK2;21
+10;Legionella pneumophila;1,5;HU2_MOCK2;21
+11;Escherichia coli;1;HU2_MOCK2;21
+12;Salmonella hyphia;1,2;HU2_MOCK2;21
+13;Shigella flexnerii;1,4;HU2_MOCK2;21
+14;Streptococcus pyogenes;1,5;HU2_MOCK2;21
+15;Staphyloccocus epidermidis;3;HU2_MOCK2;21

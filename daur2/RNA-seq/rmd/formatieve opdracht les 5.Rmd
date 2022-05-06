@@ -1,0 +1,465 @@
+---
+title: "Formatieve Opdracht"
+author: "Bas van der Burg"
+date: "5-4-2022"
+output: html_document
+---
+a.
+Het doel is om te bepalen of er verschillen zijn in genexpressie tussen iPSC en fibroblasten en te bepalen wat deze verschillen zijn.
+
+b.
+```{r download, eval=FALSE}
+for id in $(cat sample_id.txt)
+do 
+  fastq-dump --split-3 --outdir '/home/1696727/daur2/rnaseq_airway/fastq/.'       --gzip $id
+done
+```
+c. 
+De kwaliteit van de reads is goed, de reads zijn betrouwbaar.
+
+d.
+```{r alignment, eval=FALSE}
+# Load the required libraries
+library(Rsubread)
+library(tidyverse)
+
+# Create object with location of fastq files
+fastq_dir <- "./rnaseq_ipsc/fastq/"
+
+# Create object with basename of index files
+hg38_index <- "./hg38_index/hg38_index"
+
+# Create object with output dir for bam files
+bam_dir <- "./rnaseq_ipsc/bam/"
+
+# Create a vector with sample numbers
+samples <- list.files(fastq_dir, pattern = "_[12].fastq.gz") %>% 
+  str_remove(pattern = "_[12].fastq.gz") %>%
+  unique()
+
+# Align the reads in the fastq files
+alignment_statistics <- align(
+  
+  index = hg38_index,
+  readfile1 = paste0(fastq_dir, samples, "_1.fastq.gz"), 
+  readfile2 = paste0(fastq_dir, samples, "_2.fastq.gz"),
+  type = "rna", input_format = "gzFASTQ", output_format = "BAM",
+  output_file = paste0(bam_dir, samples, ".bam"), 
+      
+  # report only uniquely mapping reads
+  unique = TRUE,
+      
+  # number of CPU threads
+  nthreads = 10
+      
+)
+
+# Store the alignment statistics as R object
+saveRDS(alignment_statistics, file = paste0(bam_dir, "alignment_statistics.rds"))
+```
+e.
+```{r bar_graph}
+library(here)
+library(tidyverse)
+# Read the file into R
+alignment_stats <- readRDS("/home/daur2/rnaseq/rnaseq_ipsc/bam/alignment_statistics.rds")
+
+# Calculate the percentage of uniquely mapping fragments
+alignment_stats_t <- alignment_stats %>% 
+  t %>% 
+  as_tibble() %>% 
+  mutate(bamfile=colnames(alignment_stats)) %>%
+  mutate(perc_unique_mapped = Uniquely_mapped_fragments/Total_fragments*100)
+
+# Plot the percentages in a bar graph
+alignment_stats_t %>% ggplot(aes(x = bamfile, y = perc_unique_mapped)) +
+  geom_col() +
+  ggtitle("Proportion of uniquely mapped fragments for each sample") +
+  xlab("RNA-seq sample") +
+  ylab("Percentage of uniquely mapping fragments") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  coord_cartesian (ylim =c(0,100))
+```
+conclusie: minimaal 60% zijn uniek gemapped aan het menselijk genoom
+
+2a
+```{r count_table, eval=FALSE}
+# Load the required libraries
+library(Rsubread)
+
+# Create object with input dir for bam files
+bam_dir <- "./rnaseq_ipsc/bam/"
+
+# Create object with output dir for count tables
+counts_dir <- "./rnaseq_ipsc/counts/"
+
+# Create vector with names of bam files
+bam_files <- list.files(bam_dir, pattern = ".*\\.bam$", full.names = TRUE)
+
+# Count the reads per gene using the in-built NCBI RefSeq annotations
+read_counts <- featureCounts(
+  
+  files = bam_files,
+  annot.inbuilt = "hg38",
+  useMetaFeatures = TRUE,
+  strandSpecific = 0,
+  isPairedEnd = TRUE, 
+  countReadPairs = TRUE, 
+  nthreads = 10
+)
+```
+2b
+```{r bar_graph2}
+#loading the dataframe
+read_counts <- readRDS("/home/daur2/rnaseq/rnaseq_ipsc/counts/read_counts.rds")
+
+# Obtain the dataframe with the statistics
+count_stats <- read_counts$stat
+
+# Convert first column to rownames
+rownames(count_stats) <- count_stats$Status
+count_stats$Status <- NULL
+
+# Calculate the percentage of uniquely counting fragments
+count_stats_t <- count_stats %>% 
+  t %>% 
+  as_tibble() %>% 
+  mutate(bamfile=colnames(count_stats)) %>%
+  mutate(Total=colSums(count_stats)) %>%
+  mutate(perc_assigned = Assigned/Total*100)
+
+# Plot the percentages in a bar graph
+count_stats_t %>% ggplot(aes(x = bamfile, y = perc_assigned)) +
+  geom_col() +
+  ggtitle("Proportion of counted fragments for each sample") +
+  xlab("RNA-seq sample") +
+  ylab("Percentage of counted fragments") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  coord_cartesian (ylim =c(0,100))
+```
+conclusie: minimaal 30% van de fragments kan worden geassigned tot een gen
+
+2c
+```{r DESeq2_object}
+library(DESeq2)
+# Obtain the count matrix
+count_matrix <- read_counts$counts
+
+# Import the sample data
+metadata <- read_csv("/home/daur2/rnaseq/rnaseq_ipsc/ipsc_sampledata.csv")
+
+# Convert the metadata to dataframe object
+metadata <- as.data.frame(metadata)
+
+# Add rownames to the metadata dataframe
+rownames(metadata) <- paste0(metadata$Run, ".bam")
+
+# Check if column names of count table are the same as row names of metadata object
+colnames(count_matrix) == rownames(metadata)
+
+# Create a column specifying the test condition
+metadata <- metadata %>% mutate(treatment = str_replace(Cell_type, "Skin derived fibroblast", "Skin_derived_fibroblast"))
+metadata$treatment <- metadata$treatment %>% factor(levels = c("Skin_derived_fibroblast", "iPSC"))
+
+# Create the DESeqDataSet object
+dds <- DESeqDataSetFromMatrix(
+  countData = count_matrix,
+  colData = metadata, 
+  design = ~ treatment
+)
+
+# Normalise the DESeqDataSet object
+dds_normalised <- rlog(dds)
+
+```
+2d
+```{r PCA}
+# Perform PCA on the airway study dataset
+pca <- dds_normalised %>% assay() %>% t() %>% prcomp()
+
+# Find the proportion of variance explained by each PC
+pca_summary <- summary(pca)$importance
+pca_summary
+
+# Create data frame with metadata and the PCA values for plotting
+pca_plotting <- cbind(metadata, pca$x)
+
+# Obtain the percentages of variation covered by PC1 and PC2
+PC1_var <- round(pca_summary["Proportion of Variance", "PC1"]*100, digits = 1)
+PC2_var <- round(pca_summary["Proportion of Variance", "PC2"]*100, digits = 1)
+
+# Plot PC1 vs PC2
+ggplot(pca_plotting) + 
+  geom_point(aes(x=PC1, y=PC2,shape = Cell_type), size = 5) +
+  ggtitle("PCA for airway study") +
+  xlab(paste0("PC1 (", PC1_var, "%)")) +
+  ylab(paste0("PC2 (", PC2_var, "%)")) +
+  theme_bw()
+```
+Conclusie: PC1 bestaat uit 82,2% van de data, PC2 bestaat uit 6,6% van de data, dit ff navragen lol
+
+```{r heatmap}
+library(pheatmap)
+# Extract the matrix from the normalized DESeq object
+dds_normalized_matrix <- assay(dds_normalised)    
+# Compute pairwise correlation values
+ipsc_cor <- cor(dds_normalized_matrix)    
+ipsc_cor
+
+# Plot heatmap using the correlation; annotate the heatmap based on the treatment
+pheatmap(ipsc_cor, cluster_rows = FALSE, cluster_cols = FALSE)
+```
+conclusie: de correlatiecoefficient is hoog
+
+3a
+```{r dge}
+# Perform the DGE analysis using DESeq2
+ipsc_dge <- DESeq(dds)
+
+# Obtain the results for the DGE analysis
+ipsc_dge_results <- results(ipsc_dge, alpha = 0.05, lfcThreshold = 1)
+ipsc_dge_results
+
+# Obtain the summary of the results
+summary(ipsc_dge_results)
+```
+airway:
+adjusted p-value < 0.1
+LFC > 0 (up)       : 1542, 7.2%
+LFC < 0 (down)     : 1897, 8.8%
+outliers [1]       : 43, 0.2%
+low counts [2]     : 5329, 25%
+
+ipsc:
+adjusted p-value < 0.1
+LFC > 0 (up)       : 7330, 32%
+LFC < 0 (down)     : 5829, 25%
+outliers [1]       : 3, 0.013%
+low counts [2]     : 3539, 15%
+
+conclusie: de verschillen zijn veel groter
+
+3b
+```{r volcano}
+# Create a dataframe for plotting without genes with padj = NA
+ipsc_dge_plotting <- data.frame(ipsc_dge_results) %>% filter(!is.na(padj))
+
+# Create column specifying if gene is significantly differentially expressed
+ipsc_dge_plotting <- ipsc_dge_plotting %>% 
+  mutate(signif = if_else(padj < 0.01 & abs(log2FoldChange) > 1, 
+                          "Significant", "Not significant"))
+
+# Create a volcano plot
+ipsc_dge_plotting %>% 
+  ggplot(aes(x = log2FoldChange, y = -log10(padj), color = signif)) +
+  geom_point() + 
+  xlab("log2 fold change") +
+  ylab("-log10 adjusted p-value") + 
+  theme_bw() +
+  
+  # Change the legend text and the colours
+  scale_colour_manual(values = c("grey", "darkblue"), name = "Significance") +
+  
+  # Indicate thresholds as lines
+  geom_hline(yintercept = -log10(0.01), linetype = "dashed") +
+  geom_vline(xintercept = 1, linetype = "dashed") +
+  geom_vline(xintercept = -1, linetype = "dashed")
+```
+
+3c
+```{r heatmap2}
+# Obtain the gene identifiers of the 10 most significant genes
+top15_genes <- rownames(ipsc_dge_results[order(ipsc_dge_results$padj)[1:15],])
+
+# Obtain the count values for these genes
+count_values <- assay(dds)[top15_genes,]
+
+# Replace the column names with conditions
+colnames(count_values) <- colData(dds)$treatment
+
+# Visualize the results in a heatmap (with scaling!)
+pheatmap(count_values, scale = "row", show_rownames = TRUE)
+```
+4a
+```{r heatmap3}
+library(org.Hs.eg.db)
+# Create a dataframe for the 10 most significantly DE genes
+top15_genes <- ipsc_dge_results[order(ipsc_dge_results$padj)[1:15],] %>% data.frame()
+
+# Create an extra column with the Entrez id (based on rownames)
+top15_genes <- top15_genes %>% mutate(entrezid = rownames(top15_genes))
+
+# Obtain the count values for these genes
+count_values <- assay(dds)[top15_genes$entrezid,]
+
+# Replace the column names with conditions
+colnames(count_values) <- colData(dds)$treatment
+
+
+# Obtain the gene symbols based on the Entrez identifiers
+top15_genes$symbol <- mapIds(org.Hs.eg.db,
+                             keys = top15_genes$entrezid,
+                             column = "SYMBOL",
+                             keytype = "ENTREZID",
+                             multiVals = "first")
+
+
+#chenge the rownames
+rownames(count_values) <- top15_genes$symbol
+
+#heatmap maken
+pheatmap(count_values, scale = "row", show_rownames = TRUE)
+```
+
+```{r goterm_analysis niet werkend, eval=FALSE, include=FALSE}
+library(GOstats)
+goterm_enrichment <- function(deseq2, upregulated, lfc, pvalue){
+  
+  if (upregulated) {
+    # Create a list of upregulated genes
+    upregulated_genes <- (deseq2) %>% data.frame() %>% 
+      filter(log2FoldChange > (lfc), padj < (pvalue)) %>% rownames()
+     upregulated_genes
+    
+    # Create a list of all genes in the dataset
+    all_genes <- (deseq2) %>% data.frame() %>% rownames()
+    
+    # Perform GO term enrichment analysis
+    test_object <- new("GOHyperGParams",
+                       geneIds = upregulated_genes,
+                       universeGeneIds = all_genes, 
+                       annotation = "org.Hs.eg.db", 
+                       ontology = "BP", 
+                       pvalueCutoff = 1,
+                       testDirection = "over")
+  } else {
+    # Create a list of downregulated genes
+    downregulated_genes <- (deseq2) %>% data.frame() %>% 
+      filter(log2FoldChange < (lfc), padj < (pvalue)) %>% rownames()
+    
+    # Create a list of all genes in the dataset
+    all_genes <- (deseq2) %>% data.frame() %>% rownames()
+    
+    # Perform GO term enrichment analysis
+    test_object <- new("GOHyperGParams",
+                       geneIds = downregulated_genes,
+                       universeGeneIds = all_genes, 
+                       annotation = "org.Hs.eg.db", 
+                       ontology = "BP", 
+                       pvalueCutoff = 1,
+                       testDirection = "over")
+ downregulated_genes
+     }
+  
+}
+goterm_enrichment(ipsc_dge_results, TRUE, 1, 0.01)
+(deseq2) %>% data.frame() %>% 
+      filter(log2FoldChange < (-1), padj < (0.01)) %>% rownames()
+```
+
+```{r goterm_enrischemnt_function}
+library(GOstats)
+gtea <- function(a,b,c,d){
+  if (b==TRUE){
+    do
+    
+# Create a list of upregulated genes
+upregulated_genes <- (a) %>% data.frame() %>% 
+  filter(log2FoldChange > (c), padj < (d)) %>% rownames()
+
+# Create a list of all genes in the dataset
+all_genes <- (a) %>% data.frame() %>% rownames()
+
+# Perform GO term enrichment analysis
+test_object <- new("GOHyperGParams",
+                   geneIds = upregulated_genes,
+                   universeGeneIds = all_genes, 
+                   annotation = "org.Hs.eg.db", 
+                   ontology = "BP", 
+                   pvalueCutoff = 1,
+                   testDirection = "over")
+
+goterm_analysis <- hyperGTest(test_object)
+
+# Obtains dataframe with results of GO term analysis
+goterm_analysis_results <- summary(goterm_analysis)
+goterm_analysis_results
+    
+  } else{
+    do 
+    
+#create a list of all downregulated genes    
+downregulated_genes <- (a) %>% data.frame() %>% 
+  filter(log2FoldChange < (c), padj < (d)) %>% rownames()
+
+# Create a list of all genes in the dataset
+all_genes <- (a) %>% data.frame() %>% rownames()
+
+# Perform GO term enrichment analysis
+test_object <- new("GOHyperGParams",
+                   geneIds = downregulated_genes,
+                   universeGeneIds = all_genes, 
+                   annotation = "org.Hs.eg.db", 
+                   ontology = "BP", 
+                   pvalueCutoff = 1,
+                   testDirection = "over")
+
+goterm_analysis <- hyperGTest(test_object)
+
+# Obtains dataframe with results of GO term analysis
+goterm_analysis_results <- summary(goterm_analysis)
+goterm_analysis_results       
+  }
+}
+
+gtea(ipsc_dge_results,FALSE,-1,0.01)
+
+```
+
+```{r enrischemnt}
+upregulated <- gtea(ipsc_dge_results, TRUE, 1, 0.01)
+downregulated <- gtea(ipsc_dge_results, FALSE, -1, 0.01)
+
+# Adjust the p values for multiple testing
+upregulated$padj <- p.adjust(upregulated$Pvalue, method = "BH")
+downregulated$padj <- p.adjust(downregulated$Pvalue, method = "BH")
+
+# Select only gene sets that are larger than 5 but smaller 
+# than 500 (to prevent taking along very small and very large
+# gene sets).
+upregulated <- upregulated %>% filter(Count > 5) %>% filter(Count < 500)
+downregulated <- downregulated %>% filter(Count > 5) %>% filter(Count < 500)
+
+# Select the top 20 GO terms
+upregulated_top20 <- upregulated[order(upregulated$padj)[1:20],]
+downregulated_top20 <- downregulated[order(downregulated$padj)[1:20],]
+
+# Plot the p-values of the top 20 GO terms
+upregulated_top20$Term <- factor(upregulated_top20$Term, 
+                                     levels =upregulated_top20$Term[
+                                       order(upregulated_top20$padj, decreasing = TRUE)])
+downregulated_top20$Term <- factor(downregulated_top20$Term, 
+                                     levels =downregulated_top20$Term[
+                                       order(downregulated_top20$padj, decreasing = TRUE)])
+
+upregulated_top20 %>% ggplot(aes(x = Term, y = -log10(padj))) +
+  geom_point() +
+  coord_flip() +
+  ylab(expression(-log[10](adjusted~italic(P)~value))) + 
+  xlab("GO terms") +
+  ggtitle("Top 20 enriched GO terms\n for upregulated genes") +
+  theme_bw()
+
+downregulated_top20 %>% ggplot(aes(x = Term, y = -log10(padj))) +
+  geom_point() +
+  coord_flip() +
+  ylab(expression(-log[10](adjusted~italic(P)~value))) + n
+  xlab("GO terms") +
+  ggtitle("Top 20 enriched GO terms\n for upregulated genes") +
+  theme_bw()
+
+
+```
+conlusie: dit is inderdaad en grafiek
