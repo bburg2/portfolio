@@ -1,0 +1,15 @@
+---
+title: "introduction"
+output: html_document
+date: '2022-05-07'
+bibliography: My Library.bib
+---
+
+### Introductie
+
+In ons project gaan we in op de erasmusladder, dit is een apparaat wat een muis over een aantal sensoren laat lopen. De ladder slaat het elke keer op als een muis over en sensor loopt. Hierdoor kan er gemeten worden wanneer een muis moeite heeft met lopen. Dit komt vaak door een fout in het cerrebelum.
+
+### Bibliography
+
+@cupidoDetectingCerebellarPhenotypes; @sathyanesanCerebellarContributionLocomotor2019; @vandervaartMotorDeficitsNeurofibromatosis2011; @vinuezavelozCerebellarControlGait2015 
+
