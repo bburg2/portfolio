@@ -1,0 +1,12 @@
+---
+title: "index"
+author: "Bas"
+date: '2022-05-09'
+output: html_document
+site: bookdown::bookdown_site
+---
+
+```{r}
+bookdown::render_book(".")
+```
+
