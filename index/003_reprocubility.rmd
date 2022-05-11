@@ -4,7 +4,9 @@ author: "Bas"
 date: '2022-04-20'
 output: html_document
 ---
-# Part 1
+# reproducibility
+
+## Part 1
 ### Link naar artikel
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7583697/
 
@@ -30,7 +32,7 @@ Het protocol, de ethics en de data sharing statement zijn onder aan het artikel 
 over het algenmeen is het een goed artikel, die de werking van twee verschillende vaccins voor covid-19 test. De meeste criteria zijn goed.
 Het experiment maakt gebruik van een placebotrail waar een deel van de mensen een nep vaccin krijgen en een deel van de mensen een echt vaccin.
 
-# Part 2
+## Part 2
 Link naar artikel
 https://osf.io/wqc25/
 

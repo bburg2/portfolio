@@ -3,6 +3,8 @@ title: "assignment_1.1"
 output: html_document
 date: '2022-05-02'
 ---
+# Example Data Analysis
+
 ###Assignment 1.1
 ```{r setup, message=FALSE}
 #install.packages(readxl)

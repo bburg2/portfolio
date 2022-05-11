@@ -9,6 +9,8 @@ output:
   #bookdown::pdf_book: default
 ---
 
-# Bookdown
+```{r eval=FALSE, include=FALSE}
+bookdown::render_book()
+```
 
-Deze site bevat mijn portfolio
+
