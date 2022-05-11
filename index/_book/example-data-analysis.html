@@ -210,7 +210,7 @@ compConcentration: chr</p>
 <span id="cb4-7"><a href="example-data-analysis.html#cb4-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Concentration of compound&quot;</span>) <span class="sc">+</span></span>
 <span id="cb4-8"><a href="example-data-analysis.html#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<p><img src="_main_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 E: in de plot is compConcentration al naar een nummer veranderd. als dit niet zou gebeuren zou de x-as onleesbaar worden, ook wordt het dan moeilijk te zien wat de concentratie is.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="example-data-analysis.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#compConcentration in numeric veranderen</span></span>
 <span id="cb6-2"><a href="example-data-analysis.html#cb6-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>compConcentration <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>compConcentration)</span>
@@ -225,7 +225,7 @@ E: in de plot is compConcentration al naar een nummer veranderd. als dit niet zo
 <span id="cb6-11"><a href="example-data-analysis.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <pre><code>## Warning: Ignoring unknown aesthetics: position</code></pre>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 Nog niet hellemaal duidelijk hoe jitter werkt.</p>
 <ol start="7" style="list-style-type: upper-alpha">
 <li>The positive control for this experiments is Ethanol. (H) The negative control for this experiment is S-medium.</li>
@@ -253,7 +253,7 @@ Hierna kan een T-test uitgevoerd worden ten over de positieve controle (ethanol)
 <span id="cb9-17"><a href="example-data-analysis.html#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <pre><code>## Warning: Ignoring unknown aesthetics: position</code></pre>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<p><img src="_main_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 Ik vermoed dat ik of een foute negatieve controle heb gebruikt of dat ik de data four heb genormaliseerd</p>
 <p>K: Nu is de data van de negative controle er afgehaald, wat altijd de bedoeling want de negatieve controle zou geen effect moeten hebben</p>
 
