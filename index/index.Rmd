@@ -1,12 +1,14 @@
 ---
-title: "index"
-author: "Bas"
-date: '2022-05-09'
-output: html_document
+title: "A Book"
+author: "Frida Gomam"
 site: bookdown::bookdown_site
+documentclass: book
+output:
+  bookdown::gitbook: default
+  #bookdown::pdf_book: default
 ---
 
 ```{r}
-bookdown::render_book(".")
+bookdown::render_book()
 ```
 
