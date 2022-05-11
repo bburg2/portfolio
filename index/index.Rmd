@@ -1,14 +1,14 @@
 ---
-title: "A Book"
-author: "Frida Gomam"
+title: "Portfolio"
+author: "Bas van der Burg"
 site: bookdown::bookdown_site
 documentclass: book
+new_session: yes
 output:
   bookdown::gitbook: default
   #bookdown::pdf_book: default
 ---
 
-```{r}
-bookdown::render_book()
-```
+# Bookdown
 
+Deze site bevat mijn portfolio
