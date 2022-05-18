@@ -110,11 +110,29 @@ SELECT * FROM dengue_data;
 ```
 
 ```{r}
+# connect to the database
 con <- dbConnect(RPostgres::Postgres(), 
                  dbname = "workflowsdb", 
                  host="localhost", 
                  port="5432", 
                  user="postgres", 
                  password="kaas") 
+
+# laat de tables zien
+dbListTables(con)
+
+# laat de colummen in flu_data zien
+dbListFields(con, "flu_data")
+
+# laat het tabel flu_data zien
+dbGetQuery(con, 'SELECT * FROM flu_data')
+
+# disconnect van de database
+dbDisconnect(con) 
 ```
+
+```{r}
+view(gapminder)
+```
+
 
