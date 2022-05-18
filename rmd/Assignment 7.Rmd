@@ -10,6 +10,7 @@ library(dslabs)
 library(readr)
 library(tidyverse)
 library(here)
+library(DBI)
 ```
 
 ```{r}
@@ -21,16 +22,14 @@ dengue_data <- read_csv(here("data","dengue_data.csv"), skip = 10)
 
 # Laden van gampinder in gampinder (niet nuttig).
 gapminder <- gapminder
-
-view(flu_data_tidy)
 ```
 
 ```{r}
 # Date alleen per jaar laten zien
-flu_data$Date <- format(flu_data$Date, "%Y")
+#flu_data$Date <- format(flu_data$Date, "%Y")
 
 # Date alleen per jaar laten zien
-dengue_data$Date <- format(dengue_data$Date, "%Y")
+#dengue_data$Date <- format(dengue_data$Date, "%Y")
 
 # gapminder zelfde colnaam geven
 gapminder_tidy <- gapminder %>% rename(Date = year)
@@ -80,4 +79,42 @@ write_rds(gapminder_tidy, path = here("data","gapminder_tidy.rds"))
 ```
 
 
+```{sql, eval = FALSE}
+# en table maken
+CREATE TABLE flu_data (
+  Date VARCHAR(50),
+  country VARCHAR(50),
+  cases VARCHAR(50),
+  CONSTRAINT PK_flu PRIMARY KEY (Date,country)
+);
+
+# de date naar de table verplaatsen
+COPY flu_data FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/portfolio/data/flu_data_tidy.csv' WITH (FORMAT csv);
+
+# de table laten zien
+SELECT * FROM flu_data; 
+
+# en table maken
+CREATE TABLE dengue_data (
+  Date VARCHAR(50),
+  country VARCHAR(50),
+  activity VARCHAR(50),
+  CONSTRAINT PK_dengue PRIMARY KEY (Date,country)
+);
+
+# de date naar de table verplaatsen
+COPY dengue_data FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/portfolio/data/dengue_data_tidy.csv' WITH (FORMAT csv);
+
+# de table laten zien
+SELECT * FROM dengue_data; 
+```
+
+```{r}
+con <- dbConnect(RPostgres::Postgres(), 
+                 dbname = "workflowsdb", 
+                 host="localhost", 
+                 port="5432", 
+                 user="postgres", 
+                 password="kaas") 
+```
 
