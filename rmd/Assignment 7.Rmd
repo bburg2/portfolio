@@ -76,6 +76,9 @@ write_rds(dengue_data_tidy, path = here("data","dengue_data_tidy.rds"))
 
 # opslaan als rds bestand
 write_rds(gapminder_tidy, path = here("data","gapminder_tidy.rds"))
+
+view(flu_data_tidy)
+view(gapminder_tidy)
 ```
 
 
@@ -125,14 +128,66 @@ dbListTables(con)
 dbListFields(con, "flu_data")
 
 # laat het tabel flu_data zien
-dbGetQuery(con, 'SELECT * FROM flu_data')
+head(dbGetQuery(con, 'SELECT * FROM flu_data'))
 
 # disconnect van de database
 dbDisconnect(con) 
 ```
 
-```{r}
-view(gapminder)
+```{sql, eval = FALSE}
+#create gapminder table
+CREATE TABLE gapminder (
+  country VARCHAR(50),
+  Date VARCHAR(50),
+  infant_mortality VARCHAR(50) not null,
+  life_expectancy VARCHAR(50) not null,
+  fertitlity VARCHAR(50) not null,
+  population VARCHAR(50) not null,
+  gdp VARCHAR(50) not null,
+  continent VARCHAR(50),
+  region VARCHAR(50),
+  CONSTRAINT PK_gapminder PRIMARY KEY (Date,country)
+);
+
+#import the gampinder file
+COPY gapminder FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/portfolio/data/gapminder_tidy.csv' WITH (FORMAT csv);
+
+# laat de tabel zien
+SELECT * FROM gapminder; 
 ```
 
+```{r}
+# connect to the database
+con <- dbConnect(RPostgres::Postgres(), 
+                 dbname = "workflowsdb", 
+                 host="localhost", 
+                 port="5432", 
+                 user="postgres", 
+                 password="kaas") 
+
+gapminder_flu <- dbGetQuery(con, 'SELECT *
+FROM flu_data,gapminder
+WHERE  flu_data.country = gapminder.country;'
+)
+
+# disconnect van de database
+dbDisconnect(con) 
+
+```
+
+```{r}
+# filter for the Netherlands and calculate the average cases over time
+cases_netherlands <- gapminder_flu %>% filter(country == "Netherlands") %>% group_by(date=as.Date(date)) %>% summarise(mean_cases=mean(as.numeric(cases)))
+
+# make a gg line plot
+cases_netherlands %>%
+  ggplot(aes(x = date, y = mean_cases)) +
+  geom_line() +
+  labs(
+    title = "flu cases over time in the netherlands",
+    y = "cases"
+  )
+
+
+```
 
