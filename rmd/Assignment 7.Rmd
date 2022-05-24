@@ -11,6 +11,7 @@ library(readr)
 library(tidyverse)
 library(here)
 library(DBI)
+library(plotly)
 ```
 
 ```{r}
@@ -77,8 +78,6 @@ write_rds(dengue_data_tidy, path = here("data","dengue_data_tidy.rds"))
 # opslaan als rds bestand
 write_rds(gapminder_tidy, path = here("data","gapminder_tidy.rds"))
 
-view(flu_data_tidy)
-view(gapminder_tidy)
 ```
 
 
@@ -164,15 +163,12 @@ con <- dbConnect(RPostgres::Postgres(),
                  port="5432", 
                  user="postgres", 
                  password="kaas") 
-
-gapminder_flu <- dbGetQuery(con, 'SELECT *
-FROM flu_data,gapminder
-WHERE  flu_data.country = gapminder.country;'
+gapminder_flu <- dbGetQuery(con, 'select distinct *
+from flu_data,gapminder
+where flu_data.country = gapminder.country;'
 )
-
 # disconnect van de database
 dbDisconnect(con) 
-
 ```
 
 ```{r}
@@ -180,14 +176,36 @@ dbDisconnect(con)
 cases_netherlands <- gapminder_flu %>% filter(country == "Netherlands") %>% group_by(date=as.Date(date)) %>% summarise(mean_cases=mean(as.numeric(cases)))
 
 # make a gg line plot
-cases_netherlands %>%
+netherlands_graph <- cases_netherlands %>%
   ggplot(aes(x = date, y = mean_cases)) +
   geom_line() +
   labs(
     title = "flu cases over time in the netherlands",
     y = "cases"
   )
+ggplotly(netherlands_graph)
 
 
 ```
+
+```{r}
+# string naar date veranderen
+gapminder_flu$date <- as.Date(gapminder_flu$date)
+
+# nieuw object maken waar het gemmidelde cases is berekend in 2015 in europa
+country_cases <- gapminder_flu %>% filter(between(date, as.Date("2015-01-01"), as.Date("2015-12-30"))) %>% filter(continent == "Europe") %>% group_by(country) %>% summarise(mean_cases=mean(as.numeric(cases)))
+
+# ggplot maken
+graph <-country_cases %>%
+  ggplot(aes(x = country, y = mean_cases, fill = country_cases$country)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    title = "Average flu cases per europian country in 2015"
+  )
+
+# ggplot in een plotly veranderen
+ggplotly(graph)
+```
+
 
