@@ -4,8 +4,13 @@ author: "Bas"
 date: '2022-05-17'
 output: html_document
 ---
+# SQL data analysis
 
-```{r}
+In this report I add three different datasets to an sql database and join the table together.
+With this data I make three different graphs to show my skill in R and SQL.
+
+First thing is loading all the packages I use
+```{r, message=FALSE, warning=FALSE}
 library(dslabs)
 library(readr)
 library(tidyverse)
@@ -14,7 +19,8 @@ library(DBI)
 library(plotly)
 ```
 
-```{r}
+Here I load the data with the use of the "read_csv" command and the "here package"
+```{r, message=FALSE, warning=FALSE}
 # Laden van flu data en de eerste 10 rows skippen
 flu_data <- read_csv(here("data","flu_data.csv"), skip = 10)
 
@@ -25,18 +31,11 @@ dengue_data <- read_csv(here("data","dengue_data.csv"), skip = 10)
 gapminder <- gapminder
 ```
 
-```{r}
-# Date alleen per jaar laten zien
-#flu_data$Date <- format(flu_data$Date, "%Y")
-
-# Date alleen per jaar laten zien
-#dengue_data$Date <- format(dengue_data$Date, "%Y")
-
+Here a make the tables tidy, this for later use (is easier to work with tidy data).
+```{r, message=FALSE, warning=FALSE}
 # gapminder zelfde colnaam geven
 gapminder_tidy <- gapminder %>% rename(Date = year)
-```
 
-```{r}
 # flu_data tidy maken
 flu_data_tidy <- pivot_longer(data = flu_data, cols = -c("Date"), names_to = "country", values_to = "cases")
 
@@ -50,16 +49,8 @@ dengue_data_tidy <- pivot_longer(data = dengue_data, cols = -c("Date"), names_to
 dengue_data_tidy$country <- as.factor(dengue_data_tidy$country)
 ```
 
-```{r}
-# de duplicate rows verwijderen
-flu_data_tidy <- unique(flu_data_tidy[,1:3])
-
-# de duplicate rows verwijderen
-dengue_data_tidy <- unique(dengue_data_tidy[,1:3])
-```
-
-
-```{r}
+After this I exported the tidy data to csv an rds files
+```{r, message=FALSE, warning=FALSE}
 # Oplsaan als CSV bestand
 write_csv(flu_data_tidy, path = here("data","flu_data_tidy.csv"))
 
@@ -80,8 +71,8 @@ write_rds(gapminder_tidy, path = here("data","gapminder_tidy.rds"))
 
 ```
 
-
-```{sql, eval = FALSE}
+These are the commands I used in the sql database with the program DBeaver
+```{sql, eval = FALSE, message=FALSE, warning=FALSE}
 # en table maken
 CREATE TABLE flu_data (
   Date VARCHAR(50),
@@ -111,7 +102,8 @@ COPY dengue_data FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/port
 SELECT * FROM dengue_data; 
 ```
 
-```{r}
+Here I connect to the SQL database and inspect the database with the help of R.
+```{r, message=FALSE, warning=FALSE}
 # connect to the database
 con <- dbConnect(RPostgres::Postgres(), 
                  dbname = "workflowsdb", 
@@ -133,7 +125,7 @@ head(dbGetQuery(con, 'SELECT * FROM flu_data'))
 dbDisconnect(con) 
 ```
 
-```{sql, eval = FALSE}
+```{sql, eval = FALSE, message=FALSE, warning=FALSE}
 #create gapminder table
 CREATE TABLE gapminder (
   country VARCHAR(50),
@@ -155,7 +147,7 @@ COPY gapminder FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/portfo
 SELECT * FROM gapminder; 
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # connect to the database
 con <- dbConnect(RPostgres::Postgres(), 
                  dbname = "workflowsdb", 
@@ -171,7 +163,7 @@ where flu_data.country = gapminder.country;'
 dbDisconnect(con) 
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # filter for the Netherlands and calculate the average cases over time
 cases_netherlands <- gapminder_flu %>% filter(country == "Netherlands") %>% group_by(date=as.Date(date)) %>% summarise(mean_cases=mean(as.numeric(cases)))
 
@@ -188,7 +180,7 @@ ggplotly(netherlands_graph)
 
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # string naar date veranderen
 gapminder_flu$date <- as.Date(gapminder_flu$date)
 
@@ -208,4 +200,23 @@ graph <-country_cases %>%
 ggplotly(graph)
 ```
 
+```{r, message=FALSE, warning=FALSE}
+# string naar date veranderen
+gapminder_flu$date <- as.Date(gapminder_flu$date)
+
+# nieuw object maken waar het gemmidelde life_expectancy is berekend in 2015 in europa
+country_life <- gapminder_flu %>% filter(between(date, as.Date("2015-01-01"), as.Date("2015-12-30"))) %>% filter(continent == "Europe") %>% group_by(country) %>% summarise(mean_cases=mean(as.numeric(life_expectancy)))
+
+# ggplot maken
+graph_life <-country_life %>%
+  ggplot(aes(x = country, y = mean_cases, fill = country_cases$country)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    title = "Average life expectancy per europian country in 2015"
+  )
+
+# ggplot in een plotly veranderen
+ggplotly(graph_life)
+```
 
