@@ -125,6 +125,7 @@ head(dbGetQuery(con, 'SELECT * FROM flu_data'))
 dbDisconnect(con) 
 ```
 
+These are the commands I used in the sql database with the program DBeaver to create the gapminder table.
 ```{sql, eval = FALSE, message=FALSE, warning=FALSE}
 #create gapminder table
 CREATE TABLE gapminder (
@@ -147,6 +148,7 @@ COPY gapminder FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/portfo
 SELECT * FROM gapminder; 
 ```
 
+Here I select two table together forming 1 table wich I save as "gapminder_flu"
 ```{r, message=FALSE, warning=FALSE}
 # connect to the database
 con <- dbConnect(RPostgres::Postgres(), 
@@ -163,6 +165,7 @@ where flu_data.country = gapminder.country;'
 dbDisconnect(con) 
 ```
 
+Now I have the data wrangled an can make all kinds of graphs with the data
 ```{r, message=FALSE, warning=FALSE}
 # filter for the Netherlands and calculate the average cases over time
 cases_netherlands <- gapminder_flu %>% filter(country == "Netherlands") %>% group_by(date=as.Date(date)) %>% summarise(mean_cases=mean(as.numeric(cases)))

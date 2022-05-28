@@ -1,0 +1,47 @@
+---
+title: "Parameterized"
+author: "Bas"
+date: '2022-05-28'
+output: html_document
+---
+
+```{r}
+library(readr)
+library(here)
+library(tidyverse)
+library(plotly)
+```
+
+```{r}
+# loading the data to an object
+covid_data <- read_csv(here("data", "covid_data.csv"))
+view(covid_data)
+```
+
+```{r}
+covid_data$dateRep <- as.Date(covid_data$dateRep, tryFormats = c("%d/%m/%y"))
+
+country_filter <- covid_data %>% filter(countriesAndTerritories == "Netherlands") %>% filter(year == "2021")
+
+country_filter %>%
+  ggplot(aes(x = dateRep, y = cases)) +
+  geom_line() + 
+  labs(
+    title = "Covid cases per country by year",
+    x = "Date"
+  )
+
+```
+
+```{r}
+country_deaths <- covid_data %>% group_by(countriesAndTerritories) %>% filter(year == "2021", continentExp == "Europe") %>% summarize(deaths = sum(deaths, na.rm = TRUE))
+
+country_deaths %>% 
+  ggplot(aes(x = countriesAndTerritories, y = deaths)) +
+  geom_bar(stat = "identity") + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+
+```
+
+

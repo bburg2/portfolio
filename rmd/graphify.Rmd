@@ -1,0 +1,23 @@
+---
+title: "graphify"
+author: "Bas"
+date: '2022-05-28'
+output: html_document
+---
+
+# Package creation
+
+## description
+For a school project wich I am working on I have made a package called graphify.
+With the help of this package it is possible to create muliple graphs using a few function wich are included in the package
+
+## installation
+
+To visit the github page of the package you can click [here](https://github.com/bburg2/graphify)
+
+You can also install the package using the following code:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("bburg2/graphify", build_vignettes = TRUE)
+```
