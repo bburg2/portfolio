@@ -18,5 +18,3 @@ bookdown::render_book()
 ```
 
 # bookdown
-
-blald;f

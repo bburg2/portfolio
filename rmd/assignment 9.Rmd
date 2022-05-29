@@ -12,12 +12,30 @@ params:
 ---
 # Working with parameters
 
+One of the things that I have learned is to work with parameters in markdown files.
+With the help of parameters its easy to change what you are analysing.
+The goal of parameters is to make it readable for people but also readable for the program.
+
+For the purpose of showing my skills with markdown parameters I made an analysis based on covid-19 data.
+With this markdown file it is possible to change parameters.
+The parameters that are possible to change are:
+
+- Country from wich you want to see the data
+
+- year in wich you want to look
+
+- firstmonth and lastmonth, so you can look at data between specific months
+
+- continent from wich you want to look at
+
+
+In the video beneath you can look at the easy way to change parameters
+
 ![Working with parameters](https://media.giphy.com/media/uWRibtnGNJJ0ST4HjC/giphy.gif)
 ```{r, message=FALSE, warning=FALSE}
 library(readr)
 library(here)
 library(tidyverse)
-library(plotly)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
@@ -50,7 +68,7 @@ country_deaths <- covid_data %>% group_by(countriesAndTerritories) %>% filter(ye
 # make a bar graph based on the filter output
 country_deaths %>% 
   ggplot(aes(x = countriesAndTerritories, y = deaths)) +
-  geom_bar(stat = "identity") + 
+  geom_bar(stat = "identity") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
     title = paste("covid related deaths per country in", params$continent, "in", params$year),
