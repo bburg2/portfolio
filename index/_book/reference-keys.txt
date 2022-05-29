@@ -1,6 +1,6 @@
-bookdown
-introduction
+project-introduction
 introductie
+about-the-project
 bibliography
 example-data-analysis
 reproducibility
@@ -17,6 +17,7 @@ opdracht-l-m-en-n
 n
 o
 p
+resume
 resume-bas-van-der-burg
 opleiding
 ervaring
@@ -24,3 +25,8 @@ overig
 future-plans
 wat-wil-ik
 wat-heb-ik-hiervoor-nodig
+sql-data-analysis
+package-creation
+description
+installation
+working-with-parameters

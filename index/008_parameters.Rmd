@@ -1,5 +1,5 @@
 ---
-title: "Parameterized"
+title: ""
 author: "Bas"
 date: '2022-05-28'
 output: html_document
@@ -20,13 +20,13 @@ For the purpose of showing my skills with markdown parameters I made an analysis
 With this markdown file it is possible to change parameters.
 The parameters that are possible to change are:
 
-- Country from wich you want to see the data
+- Country from which you want to see the data
 
-- year in wich you want to look
+- year in which you want to look
 
 - firstmonth and lastmonth, so you can look at data between specific months
 
-- continent from wich you want to look at
+- continent from which you want to look at
 
 
 In the video beneath you can look at the easy way to change parameters

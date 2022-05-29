@@ -8,11 +8,15 @@ bibliography: My Library.bib
 ---
 
 
-# Introduction
+# Project Introduction
 
 ### Introductie
 
-In ons project gaan we in op de erasmusladder, dit is een apparaat wat een muis over een aantal sensoren laat lopen. De ladder slaat het elke keer op als een muis over en sensor loopt. Hierdoor kan er gemeten worden wanneer een muis moeite heeft met lopen. Dit komt vaak door een fout in het cerrebelum.
+To learn programming better my school assigned me to a project. Here I will give a short introduction to the project.
+
+### about the project
+
+The project is about the erasmusladder, this is a device made for testing motor function of mice. The device does this by having sensors in every step the mice can possibly take. After the mouse walks across one of these erasmusladders data is provided by the erasmusladder. This data set cointains 120 variables, these variables are about every step a mouse can take, for example there are nine different high to low variables, these are the steps the programs sees as a misstep. The erasmusladder is usefull for testing mice under different conditions. For example one study looked at the difference between wilt-type mice and mice with degenerating purkinje cells [@vinuezavelozCerebellarControlGait2015 ]. The erasmusladder also contains two different air outlets to control the moment of departure and the speed of the mice[@vandervaartMotorDeficitsNeurofibromatosis2011]
 
 ### Bibliography
 

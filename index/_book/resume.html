@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Example Data Analysis | _main.knit</title>
+  <title>4 resume | _main.knit</title>
   <meta name="description" content="" />
   <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 Example Data Analysis | _main.knit" />
+  <meta property="og:title" content="4 resume | _main.knit" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Example Data Analysis | _main.knit" />
+  <meta name="twitter:title" content="4 resume | _main.knit" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="project-introduction.html"/>
-<link rel="next" href="reproducibility.html"/>
+<link rel="prev" href="reproducibility.html"/>
+<link rel="next" href="resume-bas-van-der-burg.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -202,85 +202,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="example-data-analysis" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">2</span> Example Data Analysis<a href="example-data-analysis.html#example-data-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>###Assignment 1.1</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="example-data-analysis.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(readxl)</span></span>
-<span id="cb1-2"><a href="example-data-analysis.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(tidyverse)</span></span>
-<span id="cb1-3"><a href="example-data-analysis.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-4"><a href="example-data-analysis.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-5"><a href="example-data-analysis.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div>
-<p>RawData: dbl
-compName: chr
-compConcentration: chr</p>
-<p>compConcentration is niet goed geimporteerd en zou een dbl moeten zijn.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="example-data-analysis.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#compConcentration in numeric veranderen</span></span>
-<span id="cb2-2"><a href="example-data-analysis.html#cb2-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>compConcentration <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>compConcentration)</span></code></pre></div>
-<pre><code>## Warning: NAs introduced by coercion</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="example-data-analysis.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#grafiek maken</span></span>
-<span id="cb4-2"><a href="example-data-analysis.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data, <span class="fu">aes</span>(<span class="at">x =</span> compConcentration, <span class="at">y =</span> RawData)) <span class="sc">+</span></span>
-<span id="cb4-3"><a href="example-data-analysis.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> compName, </span>
-<span id="cb4-4"><a href="example-data-analysis.html#cb4-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">shape =</span> compName))<span class="sc">+</span></span>
-<span id="cb4-5"><a href="example-data-analysis.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of offspring per concentration&quot;</span>,</span>
-<span id="cb4-6"><a href="example-data-analysis.html#cb4-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Number of offspring&quot;</span>,</span>
-<span id="cb4-7"><a href="example-data-analysis.html#cb4-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Concentration of compound&quot;</span>) <span class="sc">+</span></span>
-<span id="cb4-8"><a href="example-data-analysis.html#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
-<pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-1-1.png" width="672" />
-E: in de plot is compConcentration al naar een nummer veranderd. als dit niet zou gebeuren zou de x-as onleesbaar worden, ook wordt het dan moeilijk te zien wat de concentratie is.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="example-data-analysis.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#compConcentration in numeric veranderen</span></span>
-<span id="cb6-2"><a href="example-data-analysis.html#cb6-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>compConcentration <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>compConcentration)</span>
-<span id="cb6-3"><a href="example-data-analysis.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="example-data-analysis.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#grafiek maken</span></span>
-<span id="cb6-5"><a href="example-data-analysis.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log10</span>(compConcentration), <span class="at">y =</span> RawData)) <span class="sc">+</span></span>
-<span id="cb6-6"><a href="example-data-analysis.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> compName, </span>
-<span id="cb6-7"><a href="example-data-analysis.html#cb6-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">shape =</span> compName, <span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>))<span class="sc">+</span></span>
-<span id="cb6-8"><a href="example-data-analysis.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of offspring per concentration&quot;</span>,</span>
-<span id="cb6-9"><a href="example-data-analysis.html#cb6-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Number of offspring&quot;</span>,</span>
-<span id="cb6-10"><a href="example-data-analysis.html#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;log10 Concentration of compound&quot;</span>) <span class="sc">+</span></span>
-<span id="cb6-11"><a href="example-data-analysis.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
-<pre><code>## Warning: Ignoring unknown aesthetics: position</code></pre>
-<pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" />
-Nog niet hellemaal duidelijk hoe jitter werkt.</p>
-<ol start="7" style="list-style-type: upper-alpha">
-<li>The positive control for this experiments is Ethanol. (H) The negative control for this experiment is S-medium.</li>
-</ol>
-<p>I:
-Eerst testen of de data normaal verdeeld is per stof doormiddel van een shapiro-wilk.
-Vervolgens een levene-test uitvoeren om te testen voor variatie.
-Hierna kan een T-test uitgevoerd worden ten over de positieve controle (ethanol) met elke stof.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="example-data-analysis.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#data filteren op de negatieve controle</span></span>
-<span id="cb9-2"><a href="example-data-analysis.html#cb9-2" aria-hidden="true" tabindex="-1"></a>data_negative <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(data<span class="sc">$</span>expType <span class="sc">==</span> <span class="st">&quot;controlNegative&quot;</span>) </span>
-<span id="cb9-3"><a href="example-data-analysis.html#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="example-data-analysis.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#De gemiddelde berekenen van het rawdata colom van de negative controle</span></span>
-<span id="cb9-5"><a href="example-data-analysis.html#cb9-5" aria-hidden="true" tabindex="-1"></a>mean_negative <span class="ot">&lt;-</span> <span class="fu">mean</span>(data_negative<span class="sc">$</span>RawData, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb9-6"><a href="example-data-analysis.html#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="example-data-analysis.html#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#De data normaliseren op basis van het gemiddelde van de negatieve controle</span></span>
-<span id="cb9-8"><a href="example-data-analysis.html#cb9-8" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>RawData <span class="ot">&lt;-</span> data<span class="sc">$</span>RawData <span class="sc">-</span> mean_negative</span>
-<span id="cb9-9"><a href="example-data-analysis.html#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="example-data-analysis.html#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#grafiek maken</span></span>
-<span id="cb9-11"><a href="example-data-analysis.html#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log10</span>(compConcentration), <span class="at">y =</span> RawData)) <span class="sc">+</span></span>
-<span id="cb9-12"><a href="example-data-analysis.html#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> compName, </span>
-<span id="cb9-13"><a href="example-data-analysis.html#cb9-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">shape =</span> compName, <span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>))<span class="sc">+</span></span>
-<span id="cb9-14"><a href="example-data-analysis.html#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of offspring per concentration Normalised&quot;</span>,</span>
-<span id="cb9-15"><a href="example-data-analysis.html#cb9-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Number of offspring&quot;</span>,</span>
-<span id="cb9-16"><a href="example-data-analysis.html#cb9-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;log10 Concentration of compound&quot;</span>) <span class="sc">+</span></span>
-<span id="cb9-17"><a href="example-data-analysis.html#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
-<pre><code>## Warning: Ignoring unknown aesthetics: position</code></pre>
-<pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-Ik vermoed dat ik of een foute negatieve controle heb gebruikt of dat ik de data four heb genormaliseerd</p>
-<p>K: Nu is de data van de negative controle er afgehaald, wat altijd de bedoeling want de negatieve controle zou geen effect moeten hebben</p>
-
+<div id="resume" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> resume<a href="resume.html#resume" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="project-introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="reproducibility.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="reproducibility.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="resume-bas-van-der-burg.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
