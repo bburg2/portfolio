@@ -3,43 +3,59 @@ title: "Parameterized"
 author: "Bas"
 date: '2022-05-28'
 output: html_document
+params:
+  country: "Netherlands"
+  year: "2021"
+  firstmonth: 5
+  lastmonth: 9
+  continent: "Europe"
 ---
+# Working with parameters
 
-```{r}
+![Working with parameters](https://media.giphy.com/media/uWRibtnGNJJ0ST4HjC/giphy.gif)
+```{r, message=FALSE, warning=FALSE}
 library(readr)
 library(here)
 library(tidyverse)
 library(plotly)
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # loading the data to an object
 covid_data <- read_csv(here("data", "covid_data.csv"))
-view(covid_data)
 ```
 
 ```{r}
+# change the date collumn to a date class
 covid_data$dateRep <- as.Date(covid_data$dateRep, tryFormats = c("%d/%m/%y"))
 
-country_filter <- covid_data %>% filter(countriesAndTerritories == "Netherlands") %>% filter(year == "2021")
+# filter by country, year an month
+country_filter <- covid_data %>% filter(countriesAndTerritories == params$country & year == params$year & month %in% (params$firstmonth:params$lastmonth))
 
+# make a line graph based on the filter output
 country_filter %>%
   ggplot(aes(x = dateRep, y = cases)) +
   geom_line() + 
   labs(
-    title = "Covid cases per country by year",
+    title = paste("Covid cases from",params$country, "in", params$year),
     x = "Date"
   )
 
 ```
 
 ```{r}
-country_deaths <- covid_data %>% group_by(countriesAndTerritories) %>% filter(year == "2021", continentExp == "Europe") %>% summarize(deaths = sum(deaths, na.rm = TRUE))
+# filter by year and continent and sum the amount of deaths per country
+country_deaths <- covid_data %>% group_by(countriesAndTerritories) %>% filter(year == params$year, continentExp == params$continent) %>% summarize(deaths = sum(deaths, na.rm = TRUE))
 
+# make a bar graph based on the filter output
 country_deaths %>% 
   ggplot(aes(x = countriesAndTerritories, y = deaths)) +
   geom_bar(stat = "identity") + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    title = paste("covid related deaths per country in", params$continent, "in", params$year),
+    x = "countries"
+  )
 
 
 ```
