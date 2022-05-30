@@ -1,0 +1,30 @@
+---
+title: "introduction"
+output: html_document
+date: '2022-05-07'
+bibliography: My Library.bib
+---
+
+
+# Project Introduction
+
+### Introductie
+
+To learn programming better my school assigned me to a project. Here I will give a short introduction to the project.
+
+### about the project
+
+The project is about the erasmusladder, this is a device made for testing motor function of mice. The device does this by having sensors in every step the mice can possibly take. After the mouse walks across one of these erasmusladders data is provided by the erasmusladder. This data set cointains 120 variables, these variables are about every step a mouse can take, for example there are nine different high to low variables, these are the steps the programs sees as a misstep. The erasmusladder is usefull for testing mice under different conditions. For example one study looked at the difference between wilt-type mice and mice with degenerating purkinje cells [@vinuezavelozCerebellarControlGait2015 ]. The erasmusladder also contains two different air outlets to control the moment of departure and the speed of the mice. The erasmusladder also has 2 x 37 sensors on each side of the erasmusladder wich makes is possible to output the data. The device makes a prediction if the mouse is walking at a consistant speed. If a prediction is made it will be possible to put one of the sensors down right before the mouse is there, because of this the mouse has to change his path in an instant. In some mutated mice this will not work because of a small defect in the cerebellum[@vandervaartMotorDeficitsNeurofibromatosis2011]. 
+
+When a mouse first gets into an erasmusladder it is loaded within a box with a light signal and an airduct, there is only one way to go for the mouse which is the erasmusladder. The trail starts when there is a light signal after this the airduct starts blowing air to the other side of the erasmusladder, because of this the mouse will start to move. When the mouse moves from one box to the next box this is called a trial. After the mouse gets in the other box which is on the other side another light and air que will start after 10 to 20 seconds and the mouse has to go back. One session will take 42 trials for the mouse to be done. The erasmusladder also makes it possible to make your own protocol[@sathyanesanCerebellarContributionLocomotor2019].
+
+One study which used the erasmusladder studied the cerebellum which plays an important role in motor learning. The study used control mice on the erasmus ladder and ßCamKII knockout mice. The study found that mice with a ßCamKII deficit have a motor performence an a motor learning deficit. This study used this data to prove that the erasmusladder works as intended an made the erasmusladder because there was no good technology to study motor performance in mice. Previous methods included grid walking, rope climbing, incline plane kimatic analysis, open-field tasks, gait analysis, measures of ground reaction forces, swimming and acceleration rotarod[@cupidoDetectingCerebellarPhenotypes].
+
+The goal of this project is to make it easier for research to look at the data by using rmarkdown and shinyAPP to make a lot of different graphs. With shinyAPP it is possible to change which graph you want to see, and because the graphs are writen in functions it is also easy to change which aspect you want to see of the graph. To reach to goal of the project our group started working with the agile workflow which consist of sprint of two weeks. Our project group also has a scrum board where we can look what tasks we are doing to get the best possible result for the project.
+
+
+
+### Bibliography
+
+@cupidoDetectingCerebellarPhenotypes; @sathyanesanCerebellarContributionLocomotor2019; @vandervaartMotorDeficitsNeurofibromatosis2011; @vinuezavelozCerebellarControlGait2015 
+
