@@ -1,16 +1,15 @@
 ---
 name: Bas
-surname: Burg
+surname: van der Burg
 position: "Student"
-phone: +1 22 3333 4444
-profilepic: mariecurie.jpg
-www: mariecurie.com
-email: "Marie.Curie@ens.fr"
-twitter: mariecurie
-github: mariecurie
-linkedin: mariecurie
+phone: 06 28304767
+profilepic: bas.jpeg
+www: bburg2.github.io
+email: "Bas.vanderburg@student.hu.nl"
+github: bburg2
+linkedin: soontm
 date: "`r format(Sys.time(), '%B %Y')`"
-aboutme: "Marie is a Polish and naturalized-French physicist and chemist who conducts pioneering research on radioactivity."
+aboutme: "I am a life science student who specializes in data analysis."
 output: vitae::twentyseconds
 ---
 
@@ -21,9 +20,10 @@ library(vitae)
 
 # Some stuff about me
 
- * I poisoned myself doing research.
- * I was the first woman to win a Nobel prize
- * I was the first person and only woman to win a Nobel prize in two different sciences.
+ * I have done half a year of programming before life science in which I learned java and SQL.
+ * I have been swimming my whole life and have experience in rescue swimming and scuba diving. 
+ * I have experience working with DNA-sequencing with the help of the minION.
+ * I can work with the agile workflow and work with a scrum board
 
 # Education
 
@@ -31,35 +31,47 @@ library(vitae)
 library(tibble)
 tribble(
   ~ Degree, ~ Year, ~ Institution, ~ Where,
-  "Informal studies", "1889-91", "Flying University", "Warsaw, Poland",
-  "Master of Physics", "1893", "Sorbonne Université", "Paris, France",
-  "Master of Mathematics", "1894", "Sorbonne Université", "Paris, France"
+  "Bachelor", "2018-2023", "Hogeschool Utrecht", "Utrecht, Netherlands",
+  "Minor in data science", "2022", "Hogeschool Utrecht", "Utrecht, Netherlands",
 ) %>% 
   detailed_entries(Degree, Year, Institution, Where)
 ```
 
-# Nobel Prizes
+# lab techniques
 
 ```{r}
 tribble(
-  ~Year, ~Type, ~Desc,
-  1903, "Physics", "Awarded for her work on radioactivity with Pierre Curie and Henri Becquerel",
-  1911, "Chemistry", "Awarded for the discovery of radium and polonium"
+  ~ Desc, ~ Year, ~ Institution, ~ Where,
+  "DNA-sequencing", "2018-2023", "Hogeschool Utrecht", "Utrecht, Netherlands",
+  "PCR", "2018-2023", "Hogeschool Utrecht", "Utrecht, Netherlands",
+  "Gel-electroforese", "2018-2023", "Hogeschool Utrecht", "Utrecht, Netherlands",
 ) %>% 
-  brief_entries(
-    glue::glue("Nobel Prize in {Type}"),
-    Year, 
-    Desc
-  )
+  detailed_entries(Desc, Year, Institution, Where)
 ```
 
-# Publications
+# Languages 
 
 ```{r}
-library(dplyr)
-knitr::write_bib(c("vitae", "tibble"), "packages.bib")
+tribble(
+  ~ Desc, ~ What, ~ State,
+  "Native language", "Dutch", "Fluent", 
+  "Learned language", "English", "Good",
+  "Learned language (see website)", "R","Novice",
+  "Learned language (see website)", "SQL","Novice",
+  "Learned language (see website)", "bash","Novice",
+  "Learned language (see website)", "java","Beginner",
+) %>% 
+  detailed_entries(Desc, What, State)
+```
 
-bibliography_entries("packages.bib") %>%
-  arrange(desc(author$family), issued)
+# Work Experience
+
+```{r}
+tribble(
+  ~ Desc, ~ Year, ~ Where,
+  "Working at the warehouse restocking the supermarket", "2015-2016", "Albert heijn",
+  "Data managment for a company building a website", "2018","Dr. Oetker",
+) %>% 
+  detailed_entries(Desc, Year, Where)
 ```
 

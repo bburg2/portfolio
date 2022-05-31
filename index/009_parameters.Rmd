@@ -1,15 +1,3 @@
----
-title: ""
-author: "Bas"
-date: '2022-05-28'
-output: html_document
-params:
-  country: "Netherlands"
-  year: "2021"
-  firstmonth: 5
-  lastmonth: 9
-  continent: "Europe"
----
 # Working with parameters
 
 One of the things that I have learned is to work with parameters in markdown files.

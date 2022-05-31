@@ -1,9 +1,3 @@
----
-title: "assignment 7"
-author: "Bas"
-date: '2022-05-17'
-output: html_document
----
 # SQL data analysis
 
 In this report I add three different datasets to an sql database and join the table together.

@@ -32,10 +32,10 @@
 %----------------------------------------------------------------------------------------
 
 \definecolor{white}{RGB}{255,255,255}
-\definecolor{gray}{HTML}{4D4D4D}
-\definecolor{sidecolor}{HTML}{E7E7E7}
-\definecolor{mainblue}{HTML}{0E5484}
-\definecolor{maingray}{HTML}{B9B9B9}
+\definecolor{gray}{HTML}{4F5456}
+\definecolor{sidecolor}{HTML}{097054}
+\definecolor{mainblue}{HTML}{FF9900}
+\definecolor{maingray}{HTML}{6599FF}
 
 %----------------------------------------------------------------------------------------
 %	 MISC CONFIGURATIONS

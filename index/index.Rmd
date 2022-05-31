@@ -4,8 +4,9 @@ author: "Bas van der Burg"
 documentclass: book
 site: bookdown::bookdown_site
 new_session: yes
-output:
-  bookdown::gitbook: default
+output: 
+    bookdown::gitbook:
+        css: darkdown.css
 params:
   country: "Netherlands"
   year: "2021"
