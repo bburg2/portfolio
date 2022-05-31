@@ -3,47 +3,9 @@ title: "CV_2022"
 output: html_document
 date: '2022-05-06'
 ---
-# resume
-Resume: Bas van der Burg
-============
+https://www.r-bloggers.com/2019/01/vitae-dynamic-cvs-with-r-markdown/
 
--------------------     ----------------------------
-Cambridgelaan 805                   bvdb1@hotmail.com
-3584 DW Utrecht                     
-Nederland                            06-28304767
--------------------     ----------------------------
+```{r}
+install.packages('vitae')
+```
 
-Opleiding
----------
-
-2022-2022 (Verwacht)
-:   **Minor: Data Science**; Hogeschool Utrecht
-
-    *Ervaring in: R, Bash, Python, SQL en ShinyApp*
-
-2018-2022
-:   **Life Science**; Hogeschool Utrecht
-
-    *Specialisatie: Biomolecular Research*
-
-Ervaring
-----------
-
-**Labtechnieken:**
-
-De labtechnieken die ik in de afgelopen jaren heb toegepast:
-
-* Gel-electroforese
-
-* Long Read DNA sequencing met behulp van de minION
-
-* PCR
-
-
-Overig
-----------------------------------------
-
-* Talen:
-
-     * Nederlands
-     * Engels
