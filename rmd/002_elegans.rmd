@@ -5,10 +5,10 @@ date: '2022-05-02'
 ---
 # Example Data Analysis
 
-###Assignment 1.1
+To show my skills working with basic datasets I have imported data from a C. elegans experiment and have made a few graphs based on this data.
+
+First thing is loading in some needed libraries en the data itself
 ```{r setup, message=FALSE}
-#install.packages(readxl)
-#install.packages(tidyverse)
 library(readxl)
 library(tidyverse)
 library(here)
@@ -17,12 +17,11 @@ library(here)
 ```{r data inladen, include=FALSE}
 data <- read_excel(here("data","CE.LIQ.FLOW.062_Tidydata.xlsx"))
 ```
-RawData: dbl
-compName: chr
-compConcentration: chr
 
-compConcentration is niet goed geimporteerd en zou een dbl moeten zijn.
-```{r}
+After I imported the data I looked at which classes where assigned to the variables. Most variables where imported correctly. compConcentration was imported as a character but it was a number. So I changed the class to numeric using the following command.
+
+I also plotted some data using ggplot.
+```{r, warning=FALSE, message=FALSE}
 #compConcentration in numeric veranderen
 data$compConcentration <- as.numeric(data$compConcentration)
 
@@ -35,31 +34,39 @@ ggplot(data = data, aes(x = compConcentration, y = RawData)) +
        x = "Concentration of compound") +
   theme_minimal()
 ```
-E: in de plot is compConcentration al naar een nummer veranderd. als dit niet zou gebeuren zou de x-as onleesbaar worden, ook wordt het dan moeilijk te zien wat de concentratie is.
+Because I changed to compConcentration variable to numeric the x-axis data is readable, otherwise it would have been impossible to read because there would be a lot of text clutter on the x-axis.
 
-```{r}
+
+But the data is still not easy to look at, because of this I have normalized the data in the following command with a log10 transformation. I also added some geom_jitter to make sure that the data does not overlap.
+```{r, warning=FALSE, message=TRUE}
 #compConcentration in numeric veranderen
 data$compConcentration <- as.numeric(data$compConcentration)
 
 #grafiek maken
 ggplot(data = data, aes(x = log10(compConcentration), y = RawData)) +
-  geom_point(aes(color = compName, 
-                 shape = compName, position = "jitter"))+
+  geom_jitter(aes(color = compName, shape = compName),width = 0.08)+
   labs(title = "Number of offspring per concentration",
        y = "Number of offspring",
        x = "log10 Concentration of compound") +
   theme_minimal()
 ```
-Nog niet hellemaal duidelijk hoe jitter werkt.
 
-(G) The positive control for this experiments is Ethanol. (H) The negative control for this experiment is S-medium.
 
-I:
-Eerst testen of de data normaal verdeeld is per stof doormiddel van een shapiro-wilk.
-Vervolgens een levene-test uitvoeren om te testen voor variatie.
-Hierna kan een T-test uitgevoerd worden ten over de positieve controle (ethanol) met elke stof.
+The positive control for this experiments is Ethanol. The negative control for this experiment is S-medium.
 
-```{r}
+
+For a statistical analysis to find out the if there is indeed a difference. I would:
+
+* Do a shapiro-wilk test to see if the data has a normal distribution.
+
+* Next I would do a levene test to see if there is any variance within the data.
+
+* If the data has a normal distribution I would do a T-test to see if there is any significant difference. The T-test would use the positive control group and another substance.
+
+
+
+In the last plot I normalised the data with the help of a the mean of the negative control. This is useful because now the negative control has no effect on the data itself.
+```{r, warning=FALSE, message=FALSE}
 #data filteren op de negatieve controle
 data_negative <- data %>% filter(data$expType == "controlNegative") 
 
@@ -67,20 +74,15 @@ data_negative <- data %>% filter(data$expType == "controlNegative")
 mean_negative <- mean(data_negative$RawData, na.rm = TRUE) 
 
 #De data normaliseren op basis van het gemiddelde van de negatieve controle
-data$RawData <- data$RawData - mean_negative
+data$RawData <- (data$RawData/mean_negative)*100
 
 #grafiek maken
 ggplot(data = data, aes(x = log10(compConcentration), y = RawData)) +
-  geom_point(aes(color = compName, 
-                 shape = compName, position = "jitter"))+
+  geom_jitter(aes(color = compName, shape = compName),width = 0.08)+
   labs(title = "Number of offspring per concentration Normalised",
        y = "Number of offspring",
        x = "log10 Concentration of compound") +
   theme_minimal()
-
-
 ```
-Ik vermoed dat ik of een foute negatieve controle heb gebruikt of dat ik de data four heb genormaliseerd
 
-K: Nu is de data van de negative controle er afgehaald, wat altijd de bedoeling want de negatieve controle zou geen effect moeten hebben
 

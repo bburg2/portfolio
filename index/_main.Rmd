@@ -1,0 +1,759 @@
+---
+title: "Portfolio"
+author: "Bas van der Burg"
+documentclass: book
+site: bookdown::bookdown_site
+new_session: yes
+output: 
+    bookdown::gitbook:
+        css: darkdown.css
+params:
+  country: "Netherlands"
+  year: "2021"
+  firstmonth: 5
+  lastmonth: 9
+  continent: "Europe"
+
+  
+  #bookdown::pdf_book: default
+---
+
+
+<!--chapter:end:index.Rmd-->
+
+# About me
+
+Hi, my name is Bas and I made a website for showing my skill in working with different programing languages, these languages include R, SQL and bash.
+I made a few pages for showing my different types of skills. I also uploaden my resume to my website.
+I will keep updating this page for future usage and for tracking how I develop new skill in working with programming or other types of skills like paragliding. 
+
+
+
+
+
+<!--chapter:end:001_aboutme.rmd-->
+
+# Resume
+
+With the help of the "vitae" package I have created my own resume. The advantages of this resume is that the resume is interactive and that the  resume is easily updateable for future usage.
+The pdf is loaded as an image on this page.
+
+<embed src="../Resume/resume.pdf" width="800px" height="2100px" />
+
+It is also possible to download the pdf of my resume here:
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(here)
+xfun::embed_file(here("Resume/resume.pdf"))
+```
+
+
+<!--chapter:end:002_CV.Rmd-->
+
+# Project Introduction
+
+### Introductie
+
+To learn programming better my school assigned me to a project. Here I will give a short introduction to the project.
+
+### about the project
+
+The project is about the erasmusladder, this is a device made for testing motor function of mice. The device does this by having sensors in every step the mice can possibly take. After the mouse walks across one of these erasmusladders data is provided by the erasmusladder. This data set cointains 120 variables, these variables are about every step a mouse can take, for example there are nine different high to low variables, these are the steps the programs sees as a misstep. The erasmusladder is usefull for testing mice under different conditions. For example one study looked at the difference between wilt-type mice and mice with degenerating purkinje cells [@vinuezavelozCerebellarControlGait2015 ]. The erasmusladder also contains two different air outlets to control the moment of departure and the speed of the mice. The erasmusladder also has 2 x 37 sensors on each side of the erasmusladder wich makes is possible to output the data. The device makes a prediction if the mouse is walking at a consistant speed. If a prediction is made it will be possible to put one of the sensors down right before the mouse is there, because of this the mouse has to change his path in an instant. In some mutated mice this will not work because of a small defect in the cerebellum[@vandervaartMotorDeficitsNeurofibromatosis2011]. 
+
+When a mouse first gets into an erasmusladder it is loaded within a box with a light signal and an airduct, there is only one way to go for the mouse which is the erasmusladder. The trail starts when there is a light signal after this the airduct starts blowing air to the other side of the erasmusladder, because of this the mouse will start to move. When the mouse moves from one box to the next box this is called a trial. After the mouse gets in the other box which is on the other side another light and air que will start after 10 to 20 seconds and the mouse has to go back. One session will take 42 trials for the mouse to be done. The erasmusladder also makes it possible to make your own protocol[@sathyanesanCerebellarContributionLocomotor2019].
+
+One study which used the erasmusladder studied the cerebellum which plays an important role in motor learning. The study used control mice on the erasmus ladder and ßCamKII knockout mice. The study found that mice with a ßCamKII deficit have a motor performence an a motor learning deficit. This study used this data to prove that the erasmusladder works as intended an made the erasmusladder because there was no good technology to study motor performance in mice. Previous methods included grid walking, rope climbing, incline plane kimatic analysis, open-field tasks, gait analysis, measures of ground reaction forces, swimming and acceleration rotarod[@cupidoDetectingCerebellarPhenotypes].
+
+The goal of this project is to make it easier for research to look at the data by using rmarkdown and shinyAPP to make a lot of different graphs. With shinyAPP it is possible to change which graph you want to see, and because the graphs are writen in functions it is also easy to change which aspect you want to see of the graph. To reach to goal of the project our group started working with the agile workflow which consist of sprint of two weeks. Our project group also has a scrum board where we can look what tasks we are doing to get the best possible result for the project.
+
+
+
+### Bibliography
+
+@cupidoDetectingCerebellarPhenotypes; @sathyanesanCerebellarContributionLocomotor2019; @vandervaartMotorDeficitsNeurofibromatosis2011; @vinuezavelozCerebellarControlGait2015 
+
+
+<!--chapter:end:003_introduction.Rmd-->
+
+# Example Data Analysis
+
+###Assignment 1.1
+```{r setup, message=FALSE}
+#install.packages(readxl)
+#install.packages(tidyverse)
+library(readxl)
+library(tidyverse)
+library(here)
+```
+
+```{r data inladen, include=FALSE}
+data <- read_excel(here("data","CE.LIQ.FLOW.062_Tidydata.xlsx"))
+```
+RawData: dbl
+compName: chr
+compConcentration: chr
+
+compConcentration is niet goed geimporteerd en zou een dbl moeten zijn.
+```{r}
+#compConcentration in numeric veranderen
+data$compConcentration <- as.numeric(data$compConcentration)
+
+#grafiek maken
+ggplot(data = data, aes(x = compConcentration, y = RawData)) +
+  geom_point(aes(color = compName, 
+                 shape = compName))+
+  labs(title = "Number of offspring per concentration",
+       y = "Number of offspring",
+       x = "Concentration of compound") +
+  theme_minimal()
+```
+E: in de plot is compConcentration al naar een nummer veranderd. als dit niet zou gebeuren zou de x-as onleesbaar worden, ook wordt het dan moeilijk te zien wat de concentratie is.
+
+```{r}
+#compConcentration in numeric veranderen
+data$compConcentration <- as.numeric(data$compConcentration)
+
+#grafiek maken
+ggplot(data = data, aes(x = log10(compConcentration), y = RawData)) +
+  geom_point(aes(color = compName, 
+                 shape = compName, position = "jitter"))+
+  labs(title = "Number of offspring per concentration",
+       y = "Number of offspring",
+       x = "log10 Concentration of compound") +
+  theme_minimal()
+```
+Nog niet hellemaal duidelijk hoe jitter werkt.
+
+(G) The positive control for this experiments is Ethanol. (H) The negative control for this experiment is S-medium.
+
+I:
+Eerst testen of de data normaal verdeeld is per stof doormiddel van een shapiro-wilk.
+Vervolgens een levene-test uitvoeren om te testen voor variatie.
+Hierna kan een T-test uitgevoerd worden ten over de positieve controle (ethanol) met elke stof.
+
+```{r}
+#data filteren op de negatieve controle
+data_negative <- data %>% filter(data$expType == "controlNegative") 
+
+#De gemiddelde berekenen van het rawdata colom van de negative controle
+mean_negative <- mean(data_negative$RawData, na.rm = TRUE) 
+
+#De data normaliseren op basis van het gemiddelde van de negatieve controle
+data$RawData <- data$RawData - mean_negative
+
+#grafiek maken
+ggplot(data = data, aes(x = log10(compConcentration), y = RawData)) +
+  geom_point(aes(color = compName, 
+                 shape = compName, position = "jitter"))+
+  labs(title = "Number of offspring per concentration Normalised",
+       y = "Number of offspring",
+       x = "log10 Concentration of compound") +
+  theme_minimal()
+
+
+```
+Ik vermoed dat ik of een foute negatieve controle heb gebruikt of dat ik de data four heb genormaliseerd
+
+K: Nu is de data van de negative controle er afgehaald, wat altijd de bedoeling want de negatieve controle zou geen effect moeten hebben
+
+
+<!--chapter:end:004_elegans.rmd-->
+
+# reproducibility
+
+## Part 1
+### Link naar artikel
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7583697/
+
+### References
+Edward E. Walsh, M.D., Robert W. Frenck, Jr., M.D., Ann R. Falsey, M.D., Nicholas Kitchin, M.D., Judith Absalon, M.D.,corresponding author Alejandra Gurtman, M.D., Stephen Lockhart, D.M., Kathleen Neuzil, M.D., Mark J. Mulligan, M.D., Ruth Bailey, B.Sc., Kena A. Swanson, Ph.D., Ping Li, Ph.D., Kenneth Koury, Ph.D., Warren Kalina, Ph.D., David Cooper, Ph.D., Camila Fontes-Garfias, B.Sc., Pei-Yong Shi, Ph.D., Özlem Türeci, M.D., Kristin R. Tompkins, B.Sc., Kirsten E. Lyke, M.D., Vanessa Raabe, M.D., Philip R. Dormitzer, M.D., Kathrin U. Jansen, Ph.D., Uğur Şahin, M.D., and William C. Gruber, M.D.
+
+### Criteria artikel
+|    Transparency Criteria    |                                                                                                                                Definition                                                                                                                                |    Response Type    | Response type Article            |   |
+|:---------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------:|----------------------------------|---|
+| Study Purpose               | A concise statement in the introduction of the article, often in the last paragraph, that establishes the reason the research was conducted. Also called the study objective.                                                                                            | Binary              | Yes                              |   |
+| Data Availability Statement | A statement, in an individual section offset from the main body of text, that explains how or if one can access a study’s data. The title of the section may vary, but it must explicitly mention data; it is therefore distinct from a supplementary materials section. | Binary              | Yes                              |   |
+| Data Location               | Where the article’s data can be accessed, either raw or processed.                                                                                                                                                                                                       | Found Value         | Op aanvraag                      |   |
+| Study Location              | Author has stated in the methods section where the study took place or the data’s country/region of origin.                                                                                                                                                              | Binary; Found Value | No                               |   |
+| Author Review               | The professionalism of the contact information that the author has provided in the manuscript.                                                                                                                                                                           | Found Value         | Te vinden bij Author information |   |
+| Ethics Statement            | A statement within the manuscript indicating any ethical concerns, including the presence of sensitive data.                                                                                                                                                             | Binary              | Yes                              |   |
+| Funding Statement           | A statement within the manuscript indicating whether or not the authors received funding for their research.                                                                                                                                                             | Binary              | Yes                              |   |
+| Code Availability           | Authors have shared access to the most updated code that they used in their study, including code used for analysis.                                                                                                                                                     | Binary              | No                               |  
+
+### Overige data
+Het protocol, de ethics en de data sharing statement zijn onder aan het artikel te vinden.
+
+### Extra's over artikel
+over het algenmeen is het een goed artikel, die de werking van twee verschillende vaccins voor covid-19 test. De meeste criteria zijn goed.
+Het experiment maakt gebruik van een placebotrail waar een deel van de mensen een nep vaccin krijgen en een deel van de mensen een echt vaccin.
+
+## Part 2
+Link naar artikel
+https://osf.io/wqc25/
+
+
+
+### J: 
+Eerst maken ze een aantal nieuwe functies aan die ze verderop gaan gebruiken.
+Vervolgens laden ze de samplegroepen van het experiment in, ze controleren ook of er missing values zijn. ze maken een barplot van deze samples.
+Vervolgens gaan ze verschillende grafiek etc van deze data maken
+
+### K: 
+3, de code is aanwezig met comments, maar de comments zijn niet altijd even duidelijk.
+
+### Opdracht L, M en N
+```{r}
+library(here)
+# read data ---------------------------------------------------------------
+# sample 1
+sample1 <- read.csv(here("data","sample1_use for revision 1.csv"))
+sample1 <- sample1[sample1$include_1,]
+
+# sample 2
+sample2 <- read.csv(here("data","sample2_use for revision 1.csv"))
+sample2 <- sample2[sample2$include_1,]
+
+# combine samples for the additional analyses
+data <- rbind(sample1, sample2)
+
+# packages ----------------------------------------------------------------
+# functie inladen
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+
+get_max_daily <- function(x){
+  x <- x + c(1:4, 9:12, 17:20, 25:27)
+  x <- x[x < ymd("2020-04-13 UTC")]
+  return(x)
+}
+
+# install.packages("lubridate")
+library(lubridate)
+
+# -------------------------------------------------------------------------
+
+## define colors
+c <- gg_color_hue(2)
+col.s1 <- c[1]
+col.s2 <- c[2]
+
+# completed baseline surveys per day that are included in the study
+data_l2_s1 <- unique(sample1[c("ID", "b_baseline_ended")])
+data_l2_s2 <- unique(sample2[c("ID", "b_baseline_ended")])
+
+# no missings on this variable
+any(is.na(data_l2_s1[2]))
+any(is.na(data_l2_s2[2]))
+
+date_s1 <- ymd_hms(data_l2_s1$b_baseline_ended)
+hour(date_s1) <- 0
+minute(date_s1) <- 0
+second(date_s1) <- 0
+
+date_s2 <- ymd_hms(data_l2_s2$b_baseline_ended)
+hour(date_s2) <- 0
+minute(date_s2) <- 0
+second(date_s2) <- 0
+
+
+# number of baseline surveys completed
+t_date_baseline_1 <- table(ymd(date_s1))
+t_date_baseline_2 <- table(ymd(date_s2))
+t_date_baseline_1 <- c(t_date_baseline_1, "2020-04-12" = 0)
+t_date_baseline_12 <- rbind(t_date_baseline_1, t_date_baseline_2)
+
+# barplot sample 1 and 2 baseline participation ---------------------------
+
+layout(matrix(1:2, 1, 2, byrow = TRUE))
+
+b <- barplot(t_date_baseline_12, beside = TRUE, ylim = c(0, 800), names.arg = rep("", length(t_date_baseline_12)),
+             col = c(col.s1, col.s2), axes = FALSE)
+box()
+axis(2, las = 2, cex.axis = 0.8)
+s <- seq(1, 28, 7)
+labels <- colnames(t_date_baseline_12)[s]
+axis(1, at = ((b[1,] + b[2,])/2)[s], labels = labels, cex.axis = 0.8)
+text("A", x = ((b[1,] + b[2,])/2)[2], y = 800*.9, cex = 4, col = "grey")
+legend(x = ((b[1,] + b[2,])/2)[15], y = 800, legend = c("Sample 1", "Sample 2"), fill = c(col.s1, col.s2), bty = "n")
+
+
+# dates at which a daily survey could have been completed:
+max_daily_dates_s1 <- lapply(ymd(date_s1), get_max_daily)
+max_daily_dates_s2 <- lapply(ymd(date_s2), get_max_daily)
+
+max_dates_s1 <- do.call("c", max_daily_dates_s1)
+max_dates_s2 <- do.call("c", max_daily_dates_s2)
+obtained_dates_s1 <- sample1$daily_date
+obtained_dates_s2 <- sample2$daily_date
+
+t_max_dates_s1 <- table(max_dates_s1)
+t_max_dates_s2 <- table(max_dates_s2)
+
+t_obtained_dates_s1 <- table(obtained_dates_s1)
+t_obtained_dates_s2 <- table(obtained_dates_s2)
+
+t_obtained_dates_s12 <- rbind(t_obtained_dates_s1, t_obtained_dates_s2)
+
+b <- barplot(t_obtained_dates_s12, beside = TRUE, ylim = c(0, 2000),
+             names.arg = rep("", length(t_obtained_dates_s12)),
+             col = c(col.s1, col.s2), axes = FALSE)
+box()
+axis(2, las = 2, cex.axis = 0.8)
+labels <- colnames(t_obtained_dates_s12)[s]
+axis(1, at = ((b[1,] + b[2,])/2)[s], labels = labels, cex.axis = 0.8)
+
+lines(y = t_max_dates_s1, x = b[1,], type = "p", pch = "-", col = col.s1, cex = 1.5)
+lines(y = t_max_dates_s2, x = b[2,], type = "p", pch = "-", col = col.s2, cex = 1.5)
+text("B", x = ((b[1,] + b[2,])/2)[2], y = 2000*.9, cex = 4, col = "grey")
+legend(x = ((b[1,] + b[2,])/2)[15], y = 2000, legend = c("Sample 1", "Sample 2"), fill = c(col.s1, col.s2), bty = "n")
+
+# difference obtained and maximum -----------------------------------------
+
+obtained_total <- sum(t_obtained_dates_s12)
+max_reports_total <- sum(c(t_max_dates_s1, t_max_dates_s2))
+round(obtained_total/max_reports_total*100, 2)
+
+# average surveys per day -------------------------------------------------
+
+median(colSums(t_obtained_dates_s12))
+
+
+# average number of loneliness scores per participant ---------------------
+
+s1_lst <- split(sample1, f = sample1$ID)
+n_1 <- unlist(lapply(s1_lst, function(x) sum(!is.na(x$loneliness))))
+mean(n_1)
+sd(n_1)
+range(n_1)
+
+
+s2_lst <- split(sample2, f = sample2$ID)
+n_2 <- unlist(lapply(s2_lst, function(x) sum(!is.na(x$loneliness))))
+mean(n_2)
+sd(n_2)
+range(n_2)
+
+# distribution of participants across number of daily surveys
+layout(1)
+b <- barplot(table(c(n_1, n_2)), main = "", ylab = "valid loneliness scores",
+             xlab = "number of completed daily surveys",
+             ylim = c(0, 900), lwd = 1.3)
+box(lwd = 1.3)
+
+
+# surveys, not valid measures
+n_1 <- unlist(lapply(s1_lst, function(x) nrow(x)))
+n_2 <- unlist(lapply(s2_lst, function(x) nrow(x)))
+mean(n_1)
+sd(n_1)
+range(n_1)
+
+mean(n_2)
+sd(n_2)
+range(n_2)
+
+b <- barplot(table(c(n_1, n_2)), main = "", ylab = "N",
+             xlab = "number of completed daily surveys",
+             ylim = c(0, 1000), lwd = 1.3)
+box(lwd = 1.3)
+
+# N and measurement occasions ---------------------------------------------
+
+sample1_lst <- split(sample1, f = sample1$ID)
+sample2_lst <- split(sample2, f = sample2$ID)
+
+length(sample1_lst)
+length(sample2_lst)
+
+length(sample1_lst) + length(sample2_lst)
+
+nrow(sample1)
+nrow(sample2)
+
+nrow(sample1) + nrow(sample2)
+
+# demographic variables ---------------------------------------------------
+
+names <- names(sample1)
+variables_level_2 <- grep(x = names, pattern = "ID|group|b_|var_|federal", value = TRUE)
+data_l2_s1 <- unique(sample1[variables_level_2])
+data_l2_s2 <- unique(sample2[variables_level_2])
+
+## age
+mean(data_l2_s1$b_demo_age_1)
+sd(data_l2_s1$b_demo_age_1)
+mean(data_l2_s2$b_demo_age_1)
+sd(data_l2_s2$b_demo_age_1)
+
+# generate level 2 data frame for all participants
+data_l2 <- unique(data[c(grep(x = names(data), pattern = "ID|b_demo|b_work|b_corona", value = TRUE))])
+
+mean(data_l2$b_demo_age_1)
+sd(data_l2$b_demo_age_1)
+barplot(table(data_l2$b_demo_age_1), main = "Distribution of age across the total sample", lwd = 1.3, ylim = c(0, 200))
+box(lwd = 1.3)
+
+## quartiles of age
+quantile(data_l2$b_demo_age_1)
+
+```
+### N: 
+de path was eerst fout die naar de data leide die heb ik goed gezet. Ook werden de functies ingeladen in een andere file. De functie die ontbreekte (gg_color_hue en get_max_daily), heb ik aan de code toegevoegd en toen werkte die wel.
+
+### O: 
+4, Er moesten maar een paar dingen veranderd worden om de figuren te krijgen.
+
+### P:
+4, Voor reproducibility, het was redelijk gemakkelijk om de figuren te genereren
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--chapter:end:005_reprocubility.rmd-->
+
+# Future plans
+
+### Wat wil ik?
+
+Ik zou later graag iets met next-generation sequencingen willen doen.
+Het lijkt me dan leuk om een deel in het lab te staan maar ook een deel de data te verwerken.
+
+### wat heb ik hiervoor nodig?
+
+IK ben gaan zoeken naar vacatures die iets te maken hebben met NGS.
+Vaak zie ik Python langs komen, dus ik wel me mischien verdiepen in Python maar ik weet het nog niet zeker.
+
+<!--chapter:end:006_future.Rmd-->
+
+# SQL data analysis
+
+In this report I add three different datasets to an sql database and join the table together.
+With this data I make three different graphs to show my skill in R and SQL.
+
+First thing is loading all the packages I use
+```{r, message=FALSE, warning=FALSE}
+library(dslabs)
+library(readr)
+library(tidyverse)
+library(here)
+library(DBI)
+library(plotly)
+```
+
+Here I load the data with the use of the "read_csv" command and the "here package"
+```{r, message=FALSE, warning=FALSE}
+# Laden van flu data en de eerste 10 rows skippen
+flu_data <- read_csv(here("data","flu_data.csv"), skip = 10)
+
+# Laden van denque data en de eerste 10 rows skippen
+dengue_data <- read_csv(here("data","dengue_data.csv"), skip = 10)
+
+# Laden van gampinder in gampinder (niet nuttig).
+gapminder <- gapminder
+```
+
+Here a make the tables tidy, this for later use (is easier to work with tidy data).
+```{r, message=FALSE, warning=FALSE}
+# gapminder zelfde colnaam geven
+gapminder_tidy <- gapminder %>% rename(Date = year)
+
+# flu_data tidy maken
+flu_data_tidy <- pivot_longer(data = flu_data, cols = -c("Date"), names_to = "country", values_to = "cases")
+
+# en factor van country maken
+flu_data_tidy$country <- as.factor(flu_data_tidy$country)
+
+# dengue_data tidy maken
+dengue_data_tidy <- pivot_longer(data = dengue_data, cols = -c("Date"), names_to = "country", values_to = "activity")
+
+# en factor van country maken
+dengue_data_tidy$country <- as.factor(dengue_data_tidy$country)
+```
+
+After this I exported the tidy data to csv an rds files
+```{r, message=FALSE, warning=FALSE}
+# Oplsaan als CSV bestand
+write_csv(flu_data_tidy, path = here("data","flu_data_tidy.csv"))
+
+# Oplsaan als CSV bestand
+write_csv(dengue_data_tidy, path = here("data","dengue_data_tidy.csv"))
+
+# Oplsaan als CSV bestand
+write_csv(gapminder_tidy, path = here("data","gapminder_tidy.csv"))
+
+# opslaan als rds bestand
+write_rds(flu_data_tidy, path = here("data","flu_data_tidy.rds"))
+
+# opslaan als rds bestand
+write_rds(dengue_data_tidy, path = here("data","dengue_data_tidy.rds"))
+
+# opslaan als rds bestand
+write_rds(gapminder_tidy, path = here("data","gapminder_tidy.rds"))
+
+```
+
+These are the commands I used in the sql database with the program DBeaver
+```{sql, eval = FALSE, message=FALSE, warning=FALSE}
+# en table maken
+CREATE TABLE flu_data (
+  Date VARCHAR(50),
+  country VARCHAR(50),
+  cases VARCHAR(50),
+  CONSTRAINT PK_flu PRIMARY KEY (Date,country)
+);
+
+# de date naar de table verplaatsen
+COPY flu_data FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/portfolio/data/flu_data_tidy.csv' WITH (FORMAT csv);
+
+# de table laten zien
+SELECT * FROM flu_data; 
+
+# en table maken
+CREATE TABLE dengue_data (
+  Date VARCHAR(50),
+  country VARCHAR(50),
+  activity VARCHAR(50),
+  CONSTRAINT PK_dengue PRIMARY KEY (Date,country)
+);
+
+# de date naar de table verplaatsen
+COPY dengue_data FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/portfolio/data/dengue_data_tidy.csv' WITH (FORMAT csv);
+
+# de table laten zien
+SELECT * FROM dengue_data; 
+```
+
+Here I connect to the SQL database and inspect the database with the help of R.
+```{r, message=FALSE, warning=FALSE}
+# connect to the database
+con <- dbConnect(RPostgres::Postgres(), 
+                 dbname = "workflowsdb", 
+                 host="localhost", 
+                 port="5432", 
+                 user="postgres", 
+                 password="kaas") 
+
+# laat de tables zien
+dbListTables(con)
+
+# laat de colummen in flu_data zien
+dbListFields(con, "flu_data")
+
+# laat het tabel flu_data zien
+head(dbGetQuery(con, 'SELECT * FROM flu_data'))
+
+# disconnect van de database
+dbDisconnect(con) 
+```
+
+These are the commands I used in the sql database with the program DBeaver to create the gapminder table.
+```{sql, eval = FALSE, message=FALSE, warning=FALSE}
+#create gapminder table
+CREATE TABLE gapminder (
+  country VARCHAR(50),
+  Date VARCHAR(50),
+  infant_mortality VARCHAR(50) not null,
+  life_expectancy VARCHAR(50) not null,
+  fertitlity VARCHAR(50) not null,
+  population VARCHAR(50) not null,
+  gdp VARCHAR(50) not null,
+  continent VARCHAR(50),
+  region VARCHAR(50),
+  CONSTRAINT PK_gapminder PRIMARY KEY (Date,country)
+);
+
+#import the gampinder file
+COPY gapminder FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/portfolio/data/gapminder_tidy.csv' WITH (FORMAT csv);
+
+# laat de tabel zien
+SELECT * FROM gapminder; 
+```
+
+Here I select two table together forming 1 table wich I save as "gapminder_flu"
+```{r, message=FALSE, warning=FALSE}
+# connect to the database
+con <- dbConnect(RPostgres::Postgres(), 
+                 dbname = "workflowsdb", 
+                 host="localhost", 
+                 port="5432", 
+                 user="postgres", 
+                 password="kaas") 
+gapminder_flu <- dbGetQuery(con, 'select distinct *
+from flu_data,gapminder
+where flu_data.country = gapminder.country;'
+)
+# disconnect van de database
+dbDisconnect(con) 
+```
+
+Now I have the data wrangled an can make all kinds of graphs with the data
+```{r, message=FALSE, warning=FALSE}
+# filter for the Netherlands and calculate the average cases over time
+cases_netherlands <- gapminder_flu %>% filter(country == "Netherlands") %>% group_by(date=as.Date(date)) %>% summarise(mean_cases=mean(as.numeric(cases)))
+
+# make a gg line plot
+netherlands_graph <- cases_netherlands %>%
+  ggplot(aes(x = date, y = mean_cases)) +
+  geom_line() +
+  labs(
+    title = "flu cases over time in the netherlands",
+    y = "cases"
+  )
+ggplotly(netherlands_graph)
+
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+# string naar date veranderen
+gapminder_flu$date <- as.Date(gapminder_flu$date)
+
+# nieuw object maken waar het gemmidelde cases is berekend in 2015 in europa
+country_cases <- gapminder_flu %>% filter(between(date, as.Date("2015-01-01"), as.Date("2015-12-30"))) %>% filter(continent == "Europe") %>% group_by(country) %>% summarise(mean_cases=mean(as.numeric(cases)))
+
+# ggplot maken
+graph <-country_cases %>%
+  ggplot(aes(x = country, y = mean_cases, fill = country_cases$country)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    title = "Average flu cases per europian country in 2015"
+  )
+
+# ggplot in een plotly veranderen
+ggplotly(graph)
+```
+
+```{r, message=FALSE, warning=FALSE}
+# string naar date veranderen
+gapminder_flu$date <- as.Date(gapminder_flu$date)
+
+# nieuw object maken waar het gemmidelde life_expectancy is berekend in 2015 in europa
+country_life <- gapminder_flu %>% filter(between(date, as.Date("2015-01-01"), as.Date("2015-12-30"))) %>% filter(continent == "Europe") %>% group_by(country) %>% summarise(mean_cases=mean(as.numeric(life_expectancy)))
+
+# ggplot maken
+graph_life <-country_life %>%
+  ggplot(aes(x = country, y = mean_cases, fill = country_cases$country)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    title = "Average life expectancy per europian country in 2015"
+  )
+
+# ggplot in een plotly veranderen
+ggplotly(graph_life)
+```
+
+
+<!--chapter:end:007_SQL.Rmd-->
+
+# Package creation
+
+## description
+For a school project wich I am working on I have made a package called graphify.
+With the help of this package it is possible to create muliple graphs using a few function wich are included in the package
+
+## installation
+
+To visit the github page of the package you can click [here](https://github.com/bburg2/graphify)
+
+You can also install the package using the following code:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("bburg2/graphify", build_vignettes = TRUE)
+```
+
+<!--chapter:end:008_graphify.Rmd-->
+
+# Working with parameters
+
+One of the things that I have learned is to work with parameters in markdown files.
+With the help of parameters its easy to change what you are analysing.
+The goal of parameters is to make it readable for people but also readable for the program.
+
+For the purpose of showing my skills with markdown parameters I made an analysis based on covid-19 data.
+With this markdown file it is possible to change parameters.
+The parameters that are possible to change are:
+
+- Country from which you want to see the data
+
+- year in which you want to look
+
+- firstmonth and lastmonth, so you can look at data between specific months
+
+- continent from which you want to look at
+
+
+In the video beneath you can look at the easy way to change parameters
+
+![Working with parameters](https://media.giphy.com/media/uWRibtnGNJJ0ST4HjC/giphy.gif)
+```{r, message=FALSE, warning=FALSE}
+library(readr)
+library(here)
+library(tidyverse)
+```
+
+```{r, message=FALSE, warning=FALSE}
+# loading the data to an object
+covid_data <- read_csv(here("data", "covid_data.csv"))
+```
+
+```{r}
+# change the date collumn to a date class
+covid_data$dateRep <- as.Date(covid_data$dateRep, tryFormats = c("%d/%m/%y"))
+
+# filter by country, year an month
+country_filter <- covid_data %>% filter(countriesAndTerritories == params$country & year == params$year & month %in% (params$firstmonth:params$lastmonth))
+
+# make a line graph based on the filter output
+country_filter %>%
+  ggplot(aes(x = dateRep, y = cases)) +
+  geom_line() + 
+  labs(
+    title = paste("Covid cases from",params$country, "in", params$year),
+    x = "Date"
+  )
+
+```
+
+```{r}
+# filter by year and continent and sum the amount of deaths per country
+country_deaths <- covid_data %>% group_by(countriesAndTerritories) %>% filter(year == params$year, continentExp == params$continent) %>% summarize(deaths = sum(deaths, na.rm = TRUE))
+
+# make a bar graph based on the filter output
+country_deaths %>% 
+  ggplot(aes(x = countriesAndTerritories, y = deaths)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    title = paste("covid related deaths per country in", params$continent, "in", params$year),
+    x = "countries"
+  )
+
+
+```
+
+
+
+<!--chapter:end:009_parameters.Rmd-->
+

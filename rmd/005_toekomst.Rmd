@@ -3,14 +3,12 @@ title: ""
 output: html_document
 date: '2022-05-06'
 ---
-# Future plans
+# Plan for learning on my own
 
-### Wat wil ik?
+### What I want to learn
+My school has assigned me a project to learn a skill in biological data science on my own. A minimal requirement is that I wark 32 hours on this project. To find out which skill are useful for my future interests I looked at some job applications for DNA-sequencing and analysis. Because of this I had found a few jobs that had taken my interest. These jobs all required or recommended some experience in the programming language python. Because of this learning python will be my main goal for the project. 
 
-Ik zou later graag iets met next-generation sequencingen willen doen.
-Het lijkt me dan leuk om een deel in het lab te staan maar ook een deel de data te verwerken.
+### My plan to learn python
+My plan is to first learn the basics of python using the following website https://www.learnpython.org/. I expect to learn python easily because to code R which I am experienced in looks a lot like python. After I have a basic understanding of python I want to look at DNA sequence analysis. To be specific I want to look at DNA sequences that I have generated myself with the help of the minION. In another project I am workign on I am looking at metagenomics an the sequencing of water samples. I want to look if its possible to couple my DNA sequence to a database and get the different species of bacteria that are in the water sample using python. 
 
-### wat heb ik hiervoor nodig?
-
-IK ben gaan zoeken naar vacatures die iets te maken hebben met NGS.
-Vaak zie ik Python langs komen, dus ik wel me mischien verdiepen in Python maar ik weet het nog niet zeker.
+### 

@@ -4,50 +4,53 @@ author: "Bas"
 date: '2022-04-20'
 output: html_document
 ---
-# reproducibility
+# Reproducibility
 
-## Part 1
-### Link naar artikel
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7583697/
+## Working with articles
 
-### References
+One of the skills that are useful in datascience is looking at a paper and using the code in the paper to get the exact same result with the dataset. This is call reproducibility. 
+
+One of the skills I have learned is to Judge an article based on its reproducibility. 
+To show my skill on juding reproducibiility a grabbed a random article from pubmed you can find this article [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7583697/)
+
+This article looks at the safety of some of the first covid-19 vaccines.
+
+### Article References
 Edward E. Walsh, M.D., Robert W. Frenck, Jr., M.D., Ann R. Falsey, M.D., Nicholas Kitchin, M.D., Judith Absalon, M.D.,corresponding author Alejandra Gurtman, M.D., Stephen Lockhart, D.M., Kathleen Neuzil, M.D., Mark J. Mulligan, M.D., Ruth Bailey, B.Sc., Kena A. Swanson, Ph.D., Ping Li, Ph.D., Kenneth Koury, Ph.D., Warren Kalina, Ph.D., David Cooper, Ph.D., Camila Fontes-Garfias, B.Sc., Pei-Yong Shi, Ph.D., Özlem Türeci, M.D., Kristin R. Tompkins, B.Sc., Kirsten E. Lyke, M.D., Vanessa Raabe, M.D., Philip R. Dormitzer, M.D., Kathrin U. Jansen, Ph.D., Uğur Şahin, M.D., and William C. Gruber, M.D.
 
-### Criteria artikel
+### Criteria article
 |    Transparency Criteria    |                                                                                                                                Definition                                                                                                                                |    Response Type    | Response type Article            |   |
 |:---------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------:|----------------------------------|---|
 | Study Purpose               | A concise statement in the introduction of the article, often in the last paragraph, that establishes the reason the research was conducted. Also called the study objective.                                                                                            | Binary              | Yes                              |   |
 | Data Availability Statement | A statement, in an individual section offset from the main body of text, that explains how or if one can access a study’s data. The title of the section may vary, but it must explicitly mention data; it is therefore distinct from a supplementary materials section. | Binary              | Yes                              |   |
-| Data Location               | Where the article’s data can be accessed, either raw or processed.                                                                                                                                                                                                       | Found Value         | Op aanvraag                      |   |
+| Data Location               | Where the article’s data can be accessed, either raw or processed.                                                                                                                                                                                                       | Found Value         | Email the author                      |   |
 | Study Location              | Author has stated in the methods section where the study took place or the data’s country/region of origin.                                                                                                                                                              | Binary; Found Value | No                               |   |
-| Author Review               | The professionalism of the contact information that the author has provided in the manuscript.                                                                                                                                                                           | Found Value         | Te vinden bij Author information |   |
+| Author Review               | The professionalism of the contact information that the author has provided in the manuscript.                                                                                                                                                                           | Found Value         | Found by author
+information |   |
 | Ethics Statement            | A statement within the manuscript indicating any ethical concerns, including the presence of sensitive data.                                                                                                                                                             | Binary              | Yes                              |   |
 | Funding Statement           | A statement within the manuscript indicating whether or not the authors received funding for their research.                                                                                                                                                             | Binary              | Yes                              |   |
 | Code Availability           | Authors have shared access to the most updated code that they used in their study, including code used for analysis.                                                                                                                                                     | Binary              | No                               |  
 
-### Overige data
-Het protocol, de ethics en de data sharing statement zijn onder aan het artikel te vinden.
+### Other data
+The protocol, the ethics statement and the data sharing statement are founde beneath the article.
 
-### Extra's over artikel
-over het algenmeen is het een goed artikel, die de werking van twee verschillende vaccins voor covid-19 test. De meeste criteria zijn goed.
-Het experiment maakt gebruik van een placebotrail waar een deel van de mensen een nep vaccin krijgen en een deel van de mensen een echt vaccin.
+### Extra's about the article
+In general this is a good reproducible article that test the safety of multiple covid-19 vaccines with the help of a placebo trial.
+On of the things that made this article very reproducible is because it is covid-19 related. After the first wave of covid scientist started openly sharing their data to make the best vaccines as soon as possible. 
 
-## Part 2
-Link naar artikel
-https://osf.io/wqc25/
+## Working with code from articles
 
+In data science it is also a useful skill to work with open science articles. These articles show their code and show how they got their data.
+In this part of the page I look at some code and try to reproduce it of a random article. The article is found [here](https://osf.io/wqc25/)
 
+When looking at the code I can see that the data analysts first made some function for the purpose of creating some graphs. 
+After this the load in the required data and look for missing value data.
+After cleaning the data the started making some graphs.
 
-### J: 
-Eerst maken ze een aantal nieuwe functies aan die ze verderop gaan gebruiken.
-Vervolgens laden ze de samplegroepen van het experiment in, ze controleren ook of er missing values zijn. ze maken een barplot van deze samples.
-Vervolgens gaan ze verschillende grafiek etc van deze data maken
+One of the things that I look at when analysing the code is if the code hase comments describing what is being done in the code. This code has comments above every code but the comment are not always as clear as can be.
 
-### K: 
-3, de code is aanwezig met comments, maar de comments zijn niet altijd even duidelijk.
-
-### Opdracht L, M en N
-```{r}
+After I analysed the code I copied some of the code to look at how easy it is to reproduce the article.
+```{r, message=FALSE, warning=FALSE}
 library(here)
 # read data ---------------------------------------------------------------
 # sample 1
@@ -244,14 +247,17 @@ box(lwd = 1.3)
 quantile(data_l2$b_demo_age_1)
 
 ```
-### N: 
-de path was eerst fout die naar de data leide die heb ik goed gezet. Ook werden de functies ingeladen in een andere file. De functie die ontbreekte (gg_color_hue en get_max_daily), heb ik aan de code toegevoegd en toen werkte die wel.
 
-### O: 
-4, Er moesten maar een paar dingen veranderd worden om de figuren te krijgen.
+There are a few things I had to change within the code:
 
-### P:
-4, Voor reproducibility, het was redelijk gemakkelijk om de figuren te genereren
+* I had to change the path the data was led to
+
+* Some functions where loaded in another file, I copied them to the code, the functions were: "gg_color_hue" and "get_max_daily"
+
+One of the things with the output of the graphs is that they don't contain y-axis descriptions.
+This article was pretty easy to reproduce the code only needed a few changes. To rate the article on reproducible I would rate it about a four on a scale of one to five.
+
+
 
 
 
