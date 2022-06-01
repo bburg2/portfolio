@@ -1,0 +1,19 @@
+.book .book-summary * {
+  background-color: #373737ff;
+  color: white!important;
+}
+
+.book .book-body * {
+  background-color: rgb(40, 42, 53)!important;
+  color: white!important;
+}
+
+.book .Rchunk {
+  background-color: #E8E8E8 !important;
+}
+
+.book .book-body .page-wrapper .page-inner section.normal pre {
+    color: white!important;
+    background-color: #505050ff!important;
+    background: #505050ff!important;
+}

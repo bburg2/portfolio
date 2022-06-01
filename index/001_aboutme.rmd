@@ -1,9 +1,0 @@
-# About me
-
-Hi, my name is Bas and I made a website for showing my skill in working with different programing languages, these languages include R, SQL and bash.
-I made a few pages for showing my different types of skills. I also uploaden my resume to my website.
-I will keep updating this page for future usage and for tracking how I develop new skill in working with programming or other types of skills like paragliding. 
-
-
-
-

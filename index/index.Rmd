@@ -1,13 +1,13 @@
 ---
 title: "Portfolio"
 author: "Bas van der Burg"
-documentclass: book
+date: "2022"
 site: bookdown::bookdown_site
+documentclass: book
 new_session: yes
-knit: rmarkdown::render
-output: 
-    bookdown::gitbook:
-        css: darkdown.css
+output:
+  bookdown::gitbook
+bibliography: [My Library.bib]
 params:
   country: "Netherlands"
   year: "2021"
@@ -18,4 +18,10 @@ params:
   
   #bookdown::pdf_book: default
 ---
+
+# About me
+
+Hi, my name is Bas and I made a website for showing my skill in working with different programming languages, these languages include R, SQL and bash.
+I made a few pages for showing my different types of skills. I also uploaded my resume to my website.
+I will keep updating this page for future usage and for tracking how I develop new skill in working with programming or other types of skills like paragliding. 
 
