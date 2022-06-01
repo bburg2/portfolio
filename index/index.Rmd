@@ -4,6 +4,7 @@ author: "Bas van der Burg"
 documentclass: book
 site: bookdown::bookdown_site
 new_session: yes
+knit: rmarkdown::render
 output: 
     bookdown::gitbook:
         css: darkdown.css
