@@ -10,7 +10,7 @@ library(readr)
 library(tidyverse)
 library(here)
 library(DBI)
-library(plotly)
+
 ```
 
 Here I load the data with the use of the "read_csv" command and the "here package"
@@ -172,7 +172,7 @@ netherlands_graph <- cases_netherlands %>%
     title = "flu cases over time in the netherlands",
     y = "cases"
   )
-ggplotly(netherlands_graph)
+netherlands_graph
 
 
 ```
@@ -194,7 +194,7 @@ graph <-country_cases %>%
   )
 
 # ggplot in een plotly veranderen
-ggplotly(graph)
+graph
 ```
 
 ```{r, message=FALSE, warning=FALSE}
@@ -214,6 +214,6 @@ graph_life <-country_life %>%
   )
 
 # ggplot in een plotly veranderen
-ggplotly(graph_life)
+graph_life
 ```
 

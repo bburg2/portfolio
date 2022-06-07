@@ -9,7 +9,7 @@ email: "Bas.vanderburg@student.hu.nl"
 github: bburg2
 linkedin: soontm
 date: "`r format(Sys.time(), '%B %Y')`"
-aboutme: "I am a life science student who specializes in data analysis."
+aboutme: "My name is Bas, a 24 year old life science student who specializes in data analysis. My favourite thing about biology is DNA-sequencing."
 output: vitae::twentyseconds
 ---
 
