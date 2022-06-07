@@ -17,3 +17,13 @@
     background-color: #505050ff!important;
     background: #505050ff!important;
 }
+
+.book .book-body .page-wrapper .page-inner section.normal pre span {
+    color: white!important;
+    background-color: #505050ff!important;
+    background: #505050ff!important;
+}
+
+.book div {
+  background-color: rgb(40, 42, 53)!important;
+}

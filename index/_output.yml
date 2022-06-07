@@ -1,5 +1,15 @@
 bookdown::gitbook:
   highlight: tango
   css: style.css
+  config:
+    toc:
+      collapse: section
+    sharing:
+      facebook: false
+      twitter: false
+      github: true
+      all: true
+      
+      
     
   
