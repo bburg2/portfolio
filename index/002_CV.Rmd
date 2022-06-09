@@ -3,7 +3,7 @@
 With the help of the "vitae" package I have created my own resume. The advantages of this resume is that the resume is interactive and that the  resume is easily updateable for future usage.
 The pdf is loaded as an image on this page.
 
-<embed src="resume.pdf" width="800px" height="2100px" />
+<embed src="Resume.pdf" width="800px" height="2100px" />
 
 It is also possible to download the pdf of my resume here:
 ```{r echo=FALSE, message=FALSE, warning=FALSE}

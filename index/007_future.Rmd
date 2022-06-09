@@ -10,3 +10,21 @@ My school has assigned me a project to learn a skill in biological data science 
 
 ### My plan to learn python
 My plan is to first learn the basics of python using the following website https://www.learnpython.org/. I expect to learn python easily because to code R which I am experienced in looks a lot like python. After I have a basic understanding of python I want to look at DNA sequence analysis. To be specific I want to look at DNA sequences that I have generated myself with the help of the minION. In another project I am workign on I am looking at metagenomics an the sequencing of water samples. I want to look if its possible to couple my DNA sequence to a database and get the different species of bacteria that are in the water sample using python. 
+
+### progress
+
+## it is possible to track my progress here: https://github.com/bburg2/Learning-python
+
+On the first day I started learning the basics of python, this included:
+
+* lists
+
+* operators
+
+* string formatting
+
+* string operations
+
+* conditions
+
+* for and while loops

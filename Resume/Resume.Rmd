@@ -60,6 +60,7 @@ tribble(
   "Learned language (see website)", "SQL","Novice",
   "Learned language (see website)", "bash","Novice",
   "Learned language (see website)", "java","Beginner",
+  "still learning (see website)", "python","Beginner",
 ) %>% 
   detailed_entries(Desc, What, State)
 ```
