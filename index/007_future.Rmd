@@ -15,7 +15,7 @@ My plan is to first learn the basics of python using the following website https
 
 ## it is possible to track my progress here: https://github.com/bburg2/Learning-python
 
-On the first day I started learning the basics of python, this included:
+First I started learning the basics of python, this included:
 
 * lists
 
@@ -28,3 +28,20 @@ On the first day I started learning the basics of python, this included:
 * conditions
 
 * for and while loops
+
+After this I stared learning more complicated code:
+
+* dictionaries
+
+* functions
+
+* classes
+
+* modules
+
+Now that I acquired some basic knowledge about python I started with some basic data manipulation tools.
+These tools Included:
+
+* numpy arrays
+
+* pandas
