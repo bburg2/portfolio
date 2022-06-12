@@ -222,7 +222,7 @@ div.csl-indent {
 </div>
 <div id="it-is-possible-to-track-my-progress-here-httpsgithub.combburg2learning-python" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> it is possible to track my progress here: <a href="https://github.com/bburg2/Learning-python" class="uri">https://github.com/bburg2/Learning-python</a><a href="plan-for-learning-on-my-own.html#it-is-possible-to-track-my-progress-here-httpsgithub.combburg2learning-python" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>On the first day I started learning the basics of python, this included:</p>
+<p>First I started learning the basics of python, this included:</p>
 <ul>
 <li><p>lists</p></li>
 <li><p>operators</p></li>
@@ -231,6 +231,50 @@ div.csl-indent {
 <li><p>conditions</p></li>
 <li><p>for and while loops</p></li>
 </ul>
+<p>After this I stared learning more complicated code:</p>
+<ul>
+<li><p>dictionaries</p></li>
+<li><p>functions</p></li>
+<li><p>classes</p></li>
+<li><p>modules</p></li>
+</ul>
+<p>Now that I acquired some basic knowledge about python I started with some basic data manipulation tools.
+These tools Included:</p>
+<ul>
+<li><p>numpy arrays</p></li>
+<li><p>pandas</p></li>
+</ul>
+<p>After this I started some basic DNA analysis of one of the first DNA sequences that I have generated with the help of the minION.
+This was a control sample containing lambda DNA. The output of sequencing a lambda library was a fasq file containing the sequencing data.</p>
+<p>I installed a <a href="https://github.com/reneshbedre/bioinfokit">tool</a> that could analyse DNA using the following code in the terminal:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="plan-for-learning-on-my-own.html#cb67-1" aria-hidden="true" tabindex="-1"></a>pip install bioinfokit</span></code></pre></div>
+<p>after this I made a simple script to look at the general data of the file</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="plan-for-learning-on-my-own.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import bioinfokit.analys</span></span>
+<span id="cb68-2"><a href="plan-for-learning-on-my-own.html#cb68-2" aria-hidden="true" tabindex="-1"></a>from bioinfokit.analys import fastq</span>
+<span id="cb68-3"><a href="plan-for-learning-on-my-own.html#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="plan-for-learning-on-my-own.html#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load some data generated with the minION</span></span>
+<span id="cb68-5"><a href="plan-for-learning-on-my-own.html#cb68-5" aria-hidden="true" tabindex="-1"></a>fastq_iter <span class="ot">=</span> <span class="fu">fastq.fastq_reader</span>(<span class="at">file=</span><span class="st">&#39;data/AIR589_pass_dbebcefe_1.fastq&#39;</span>)</span>
+<span id="cb68-6"><a href="plan-for-learning-on-my-own.html#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="co"># read fastq file</span></span>
+<span id="cb68-7"><a href="plan-for-learning-on-my-own.html#cb68-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-8"><a href="plan-for-learning-on-my-own.html#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get sequence length</span></span>
+<span id="cb68-9"><a href="plan-for-learning-on-my-own.html#cb68-9" aria-hidden="true" tabindex="-1"></a>sequence_len <span class="ot">=</span> <span class="fu">len</span>(sequence)</span>
+<span id="cb68-10"><a href="plan-for-learning-on-my-own.html#cb68-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-11"><a href="plan-for-learning-on-my-own.html#cb68-11" aria-hidden="true" tabindex="-1"></a><span class="co"># count bases</span></span>
+<span id="cb68-12"><a href="plan-for-learning-on-my-own.html#cb68-12" aria-hidden="true" tabindex="-1"></a>a_base <span class="ot">=</span> <span class="fu">sequence.count</span>(<span class="st">&#39;A&#39;</span>)</span>
+<span id="cb68-13"><a href="plan-for-learning-on-my-own.html#cb68-13" aria-hidden="true" tabindex="-1"></a>c_base <span class="ot">=</span> <span class="fu">sequence.count</span>(<span class="st">&#39;C&#39;</span>)</span>
+<span id="cb68-14"><a href="plan-for-learning-on-my-own.html#cb68-14" aria-hidden="true" tabindex="-1"></a>t_base <span class="ot">=</span> <span class="fu">sequence.count</span>(<span class="st">&#39;T&#39;</span>)</span>
+<span id="cb68-15"><a href="plan-for-learning-on-my-own.html#cb68-15" aria-hidden="true" tabindex="-1"></a>g_base <span class="ot">=</span> <span class="fu">sequence.count</span>(<span class="st">&#39;G&#39;</span>)</span>
+<span id="cb68-16"><a href="plan-for-learning-on-my-own.html#cb68-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-17"><a href="plan-for-learning-on-my-own.html#cb68-17" aria-hidden="true" tabindex="-1"></a><span class="co"># make a dictionary for the DNA data</span></span>
+<span id="cb68-18"><a href="plan-for-learning-on-my-own.html#cb68-18" aria-hidden="true" tabindex="-1"></a>DNA <span class="ot">=</span> {}</span>
+<span id="cb68-19"><a href="plan-for-learning-on-my-own.html#cb68-19" aria-hidden="true" tabindex="-1"></a>DNA[<span class="st">&quot;sequence length&quot;</span>] <span class="ot">=</span> sequence_len </span>
+<span id="cb68-20"><a href="plan-for-learning-on-my-own.html#cb68-20" aria-hidden="true" tabindex="-1"></a>DNA[<span class="st">&quot;A count&quot;</span>] <span class="ot">=</span> a_base  </span>
+<span id="cb68-21"><a href="plan-for-learning-on-my-own.html#cb68-21" aria-hidden="true" tabindex="-1"></a>DNA[<span class="st">&quot;C count&quot;</span>] <span class="ot">=</span> c_base  </span>
+<span id="cb68-22"><a href="plan-for-learning-on-my-own.html#cb68-22" aria-hidden="true" tabindex="-1"></a>DNA[<span class="st">&quot;T count&quot;</span>] <span class="ot">=</span> t_base  </span>
+<span id="cb68-23"><a href="plan-for-learning-on-my-own.html#cb68-23" aria-hidden="true" tabindex="-1"></a>DNA[<span class="st">&quot;G count&quot;</span>] <span class="ot">=</span> g_base  </span>
+<span id="cb68-24"><a href="plan-for-learning-on-my-own.html#cb68-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-25"><a href="plan-for-learning-on-my-own.html#cb68-25" aria-hidden="true" tabindex="-1"></a><span class="co"># print the dictionary</span></span>
+<span id="cb68-26"><a href="plan-for-learning-on-my-own.html#cb68-26" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(DNA)</span></code></pre></div>
 
 </div>
 </div>

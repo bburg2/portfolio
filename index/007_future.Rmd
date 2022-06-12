@@ -45,3 +45,44 @@ These tools Included:
 * numpy arrays
 
 * pandas
+
+After this I started some basic DNA analysis of one of the first DNA sequences that I have generated with the help of the minION.
+This was a control sample containing lambda DNA. The output of sequencing a lambda library was a fasq file containing the sequencing data.
+
+I installed a [tool](https://github.com/reneshbedre/bioinfokit) that could analyse DNA using the following code in the terminal:
+
+```{r eval=FALSE}
+pip install bioinfokit
+```
+
+after this I made a simple script to look at the general data of the file
+```{r eval=FALSE}
+# import bioinfokit.analys
+from bioinfokit.analys import fastq
+
+# load some data generated with the minION
+fastq_iter = fastq.fastq_reader(file='data/AIR589_pass_dbebcefe_1.fastq')
+# read fastq file
+
+# get sequence length
+sequence_len = len(sequence)
+
+# count bases
+a_base = sequence.count('A')
+c_base = sequence.count('C')
+t_base = sequence.count('T')
+g_base = sequence.count('G')
+
+# make a dictionary for the DNA data
+DNA = {}
+DNA["sequence length"] = sequence_len 
+DNA["A count"] = a_base  
+DNA["C count"] = c_base  
+DNA["T count"] = t_base  
+DNA["G count"] = g_base  
+
+# print the dictionary
+print(DNA)
+
+```
+

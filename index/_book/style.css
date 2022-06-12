@@ -12,6 +12,11 @@
   background-color: #E8E8E8 !important;
 }
 
+.book .book-body a {
+  background-color: rgb(40, 42, 53)!important;
+  color: #4169E1!important;
+}
+
 .book .book-body .page-wrapper .page-inner section.normal pre {
     color: white!important;
     background-color: #505050ff!important;
