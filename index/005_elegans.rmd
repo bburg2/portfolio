@@ -6,17 +6,26 @@ date: '2022-05-02'
 # Example Data Analysis
 
 To show my skills working with basic datasets I have imported data from a C. elegans experiment and have made a few graphs based on this data.
+The dataset was provided by J. Louter (INT/ILC)
 
 First thing is loading in some needed libraries en the data itself
 ```{r setup, message=FALSE}
 library(readxl)
 library(tidyverse)
 library(here)
+library(DT)
 ```
 
 ```{r data inladen, include=FALSE}
 data <- read_excel(here("data","CE.LIQ.FLOW.062_Tidydata.xlsx"))
 ```
+I first looked at the data that was provided, in the next table the data is visible.
+
+```{r}
+# load the data in a datatable
+datatable(data, options = list(scrollx=TRUE))
+```
+
 
 After I imported the data I looked at which classes where assigned to the variables. Most variables where imported correctly. compConcentration was imported as a character but it was a number. So I changed the class to numeric using the following command.
 
@@ -34,10 +43,10 @@ ggplot(data = data, aes(x = compConcentration, y = RawData)) +
        x = "Concentration of compound") +
   theme_minimal()
 ```
+
 Because I changed to compConcentration variable to numeric the x-axis data is readable, otherwise it would have been impossible to read because there would be a lot of text clutter on the x-axis.
 
-
-But the data is still not easy to look at, because of this I have normalized the data in the following command with a log10 transformation. I also added some geom_jitter to make sure that the data does not overlap.
+But the data is still not easy to analyse, because of this I have normalized the data in the following command with a log10 transformation. I also added some geom_jitter to make sure that the data does not overlap.
 ```{r, warning=FALSE, message=TRUE}
 #compConcentration in numeric veranderen
 data$compConcentration <- as.numeric(data$compConcentration)
@@ -51,6 +60,7 @@ ggplot(data = data, aes(x = log10(compConcentration), y = RawData)) +
   theme_minimal()
 ```
 
+This graph is a bit easier to read, when looking at the data it seems that on a higher concentration of 2,6-diisopropylnapthalene the C. elegans gets a lesser amount of offspring. 
 
 The positive control for this experiments is Ethanol. The negative control for this experiment is S-medium.
 
@@ -80,7 +90,7 @@ data$RawData <- (data$RawData/mean_negative)*100
 ggplot(data = data, aes(x = log10(compConcentration), y = RawData)) +
   geom_jitter(aes(color = compName, shape = compName),width = 0.08)+
   labs(title = "Number of offspring per concentration Normalised",
-       y = "Number of offspring",
+       y = "Normalised amount of offspring (%)",
        x = "log10 Concentration of compound") +
   theme_minimal()
 ```

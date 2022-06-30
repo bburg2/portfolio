@@ -8,7 +8,7 @@ directories: <br>
 code: contains basic R scripts <br>
 data: bcontains all the different datasets that I use in my porfolio <br>
 daur2: contains a previous project that I worked on. I sorted these files to show my skill in data managment <br>
-index: this is the directory frome where I build the book. the final book can be found in "_book" <br>
+index: this is the directory from where I build the book. the final book can be found in "_book", This directory also contains all the rmd files in _book <br>
 pictures: contains pictures that I use in my porfolio <br>
 Resume: contains my resume wich I made with the help of vitae <br>
 
