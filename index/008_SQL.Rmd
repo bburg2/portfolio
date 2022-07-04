@@ -102,7 +102,13 @@ write_rds(gapminder_tidy, path = here("data","gapminder_tidy.rds"))
 
 ```
 
-These are the commands I used in the sql database with the program DBeaver
+I used these files to import them to a SQL database using the following commands.
+These are the commands I used in the sql database with the program DBeaver.
+
+First I had to create a table within the database usinging "CREATE TABLE", I named the table flu_data and added three colums: data, country and cases. I also made a primary key made up of the data and the country.
+
+I did the same thing for dengue_data.
+
 ```{sql, eval = FALSE, message=FALSE, warning=FALSE}
 # en table maken
 CREATE TABLE flu_data (
@@ -132,6 +138,8 @@ COPY dengue_data FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/port
 # de table laten zien
 SELECT * FROM dengue_data; 
 ```
+
+Within DBeaver the data base now looked like this: ![database](../pictures/database.png)
 
 Here I connect to the SQL database and inspect the database with the help of R.
 ```{r, message=FALSE, warning=FALSE}
