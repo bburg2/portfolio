@@ -2,30 +2,61 @@
 
 In this report I add three different datasets to an sql database and join the table together.
 With this data I make three different graphs to show my skill in R and SQL.
+Working with databases like SQL is a common thing in data science. Databases like SQL make it easier to work with large sizes of data.
 
-First thing is loading all the packages I use
+First thing is loading all the packages I use.
+
 ```{r, message=FALSE, warning=FALSE}
 library(dslabs)
 library(readr)
 library(tidyverse)
 library(here)
 library(DBI)
-
+library(DT)
 ```
 
 Here I load the data with the use of the "read_csv" command and the "here package"
+read_csv() can open an csv file and bind it to an object. As an option I used "skip = 10", this option will skip the first 10 rows while loading the data. This because the datafiles contain metadata that is not necessary for us. 
+
+The datasets that I used are flu_data, dengue_data and gapminder.
+
+* **flu_data** contains data on the weekly cases of the flu for countries around the world.
+
+* **dengue_data** contains data about dengue cases around the world by week
+
+* **gapminder** contains data about health and income for 184 countries from 1960 to 2016
+
+to look at the imported data I used the "datatable()" function to see the first 6 rows of data from each dataset. It is also possible to scroll through the data because I set the option scrollx to true.
+
+
 ```{r, message=FALSE, warning=FALSE}
 # Laden van flu data en de eerste 10 rows skippen
 flu_data <- read_csv(here("data","flu_data.csv"), skip = 10)
 
+# show the first 6 rows
+datatable(flu_data, options = list(scrollx=TRUE, pageLength = 6))
+
 # Laden van denque data en de eerste 10 rows skippen
 dengue_data <- read_csv(here("data","dengue_data.csv"), skip = 10)
 
+# show the first 6 rows
+datatable(dengue_data, options = list(scrollx=TRUE, pageLength = 6))
+
 # Laden van gampinder in gampinder (niet nuttig).
 gapminder <- gapminder
+
+# show the first 6 rows
+datatable(gapminder, options = list(scrollx=TRUE, pageLength = 6))
 ```
 
+
 Here a make the tables tidy, this for later use (is easier to work with tidy data).
+
+I also renamed the column called Date to year in the gapminder dataset.
+
+Using the "pivot_longer" function I made the dengue and flu data tidy. This means that I changed the data in a new format where there are three columns: Date, country and cases.
+I also changed the country column into a factor using "as.factor"
+
 ```{r, message=FALSE, warning=FALSE}
 # gapminder zelfde colnaam geven
 gapminder_tidy <- gapminder %>% rename(Date = year)
@@ -43,8 +74,14 @@ dengue_data_tidy <- pivot_longer(data = dengue_data, cols = -c("Date"), names_to
 dengue_data_tidy$country <- as.factor(dengue_data_tidy$country)
 ```
 
-After this I exported the tidy data to csv an rds files
-```{r, message=FALSE, warning=FALSE}
+Where flu_data previously had `r nrow(flu_data)` rows the tidydata now has `r nrow(flu_data_tidy)` rows.
+
+Where dengue_data previously had `r nrow(dengue_data)` rows the tidydata now has `r nrow(dengue_data_tidy)` rows.
+
+
+After this I exported the tidy data to csv an rds files using the write_csv and write_rds fucntion. With the help of path = ... I specified where I wanted to save the data and how I wanted to call it.
+
+```{r message=FALSE, warning=FALSE}
 # Oplsaan als CSV bestand
 write_csv(flu_data_tidy, path = here("data","flu_data_tidy.csv"))
 
