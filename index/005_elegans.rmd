@@ -8,7 +8,7 @@ date: '2022-05-02'
 To show my skills working with basic datasets I have imported data from a C. elegans experiment and have made a few graphs based on this data.
 The dataset was provided by J. Louter (INT/ILC)
 
-First thing is loading in some needed libraries en the data itself
+First thing is loading in some needed libraries and the data itself
 ```{r setup, message=FALSE}
 library(readxl)
 library(tidyverse)
@@ -16,20 +16,47 @@ library(here)
 library(DT)
 ```
 
+To import the data I used the "read_excel()" function in combination with the "here()" function. The read_excel function is used to import excel files to an object, this object can now be used to call the dataset. The here() function is used to assign the path to the file wich is imported, in this case the data is stored in the data folder. 
+
 ```{r data inladen, include=FALSE}
 data <- read_excel(here("data","CE.LIQ.FLOW.062_Tidydata.xlsx"))
 ```
-I first looked at the data that was provided, in the next table the data is visible.
+
+I first looked at the data that was provided, there are `r nrow(data)` rows of data. In the next table the data is visible.
+This datatable is shown using the "datatable()" function, I set the option scrollx to true, because of this it is possible to scroll through all the data.
+
+I also made a table showing some descriptive statistics of the data using the summarise function.
+
+With the help of this table I made a bar graph for better visualisation of the descriptive statistics
 
 ```{r}
 # load the data in a datatable
 datatable(data, options = list(scrollx=TRUE))
+
+# summarise some descripte statistics
+data_summary <- data %>% group_by(compName) %>% summarise(mean = mean(RawData, na.rm = TRUE), sd = sd(RawData, na.rm = TRUE), minimum = min(RawData, na.rm = TRUE), maximum = max(RawData, na.rm = TRUE))
+
+# here I loaded the data for visibility in the markdown file
+datatable(data_summary) %>% formatRound(columns=c('mean', 'sd'), digits=2)
+
+# plotting the descriptive statistics
+data_summary %>% 
+  ggplot(aes(x = compName, y = mean, fill = compName)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  geom_errorbar(aes(x = compName, ymin=mean-sd, ymax=mean+sd), width = 0.2) +
+  labs(
+    title = "average amount of offspring per substrate",
+    y = "average ammount of offspring"
+  )
+
 ```
 
 
-After I imported the data I looked at which classes where assigned to the variables. Most variables where imported correctly. compConcentration was imported as a character but it was a number. So I changed the class to numeric using the following command.
+After I imported the data I looked at which classes where assigned to the variables. Most variables where imported correctly. compConcentration was imported as a character but it was a number. So I changed the class to numeric using the "as.numeric()" command. 
 
-I also plotted some data using ggplot.
+I plotted the data using ggplot, where I used the compConcentration as the x-axis and the amount of offspring as the y-axis. 
+
 ```{r, warning=FALSE, message=FALSE}
 #compConcentration in numeric veranderen
 data$compConcentration <- as.numeric(data$compConcentration)
@@ -76,6 +103,9 @@ For a statistical analysis to find out the if there is indeed a difference. I wo
 
 
 In the last plot I normalised the data with the help of a the mean of the negative control. This is useful because now the negative control has no effect on the data itself.
+
+I first filtered so that it only uses data from the negative control using the "filter()" function. After this I calculated the mean ammount of offspring from the negative control experiment. Using this mean I could normalise the data and make a graph out of it.
+
 ```{r, warning=FALSE, message=FALSE}
 #data filteren op de negatieve controle
 data_negative <- data %>% filter(data$expType == "controlNegative") 
@@ -95,4 +125,5 @@ ggplot(data = data, aes(x = log10(compConcentration), y = RawData)) +
   theme_minimal()
 ```
 
-
+In this graph you can see clearly that there is indeed a negative corralation with the 2,6-diisopropylnapthalene concentration and the amount of offspring.
+To know if there is a statistical significant difference a T-test could bee used. 
