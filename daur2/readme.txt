@@ -1,0 +1,1 @@
+The daur2 folder contains files that are used in a previous project and are cleaned up with the guerilla structure of folders.
