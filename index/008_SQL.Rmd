@@ -107,6 +107,8 @@ These are the commands I used in the sql database with the program DBeaver.
 
 First I had to create a table within the database usinging "CREATE TABLE", I named the table flu_data and added three colums: data, country and cases. I also made a primary key made up of the data and the country.
 
+With the help of COPY we can fill the newly created table with data from the csv file that we just created. FROM was used the specify the path of the data.
+
 I did the same thing for dengue_data.
 
 ```{sql, eval = FALSE, message=FALSE, warning=FALSE}
@@ -142,6 +144,27 @@ SELECT * FROM dengue_data;
 Within DBeaver the data base now looked like this: ![database](../pictures/database.png)
 
 Here I connect to the SQL database and inspect the database with the help of R.
+With the help of "dbConnect" I can load the database in an object called "con".
+within this function I need to specify:
+
+* dbname: The name of the database
+
+* host: where the database is hosted, on my own pc in this case
+
+* port: the connection port
+
+* user: the username
+
+* password: the password, in this  example a bad password is used.
+
+with "dbListTables()" I show all tables that are seen (can also be seen in the "database" picture above)
+
+with "dbListField()" I show all fields within "flu_data" in this case
+
+You can also put SQL language in R by using "dbGetQuery()" I used this to show the whole flu_data table. To only show the first 6 rows I put the "head()" function around it. 
+
+To disconnect from the database I used the "dbDisconnect()" function
+
 ```{r, message=FALSE, warning=FALSE}
 # connect to the database
 con <- dbConnect(RPostgres::Postgres(), 
@@ -165,6 +188,8 @@ dbDisconnect(con)
 ```
 
 These are the commands I used in the sql database with the program DBeaver to create the gapminder table.
+I also used the COPY function again to import the data. And used CONSTRAINT to make a key based on Date and country
+
 ```{sql, eval = FALSE, message=FALSE, warning=FALSE}
 #create gapminder table
 CREATE TABLE gapminder (
@@ -187,7 +212,9 @@ COPY gapminder FROM 'C:/Users/Bas/Desktop/School/Programmeren/datascience/portfo
 SELECT * FROM gapminder; 
 ```
 
-Here I select two table together forming 1 table wich I save as "gapminder_flu"
+In the next lines of code I connected to the database again and selected the flu_data and gapminder in one table using the primary key (data, country) I saved this data in "gapminder_flu" and disconnected.
+gapminder_flu can now be used to create some graphs of the data.
+
 ```{r, message=FALSE, warning=FALSE}
 # connect to the database
 con <- dbConnect(RPostgres::Postgres(), 
@@ -204,7 +231,10 @@ where flu_data.country = gapminder.country;'
 dbDisconnect(con) 
 ```
 
-Now I have the data wrangled an can make all kinds of graphs with the data
+The first graph that I made are the average amount of flu cases in the Netherlands over time. I did this by first filtering for the country Netherlands. After this I grouped the data by date using the "group_by" function, the date column didn't have the correct class yet so I used as.Date to make it a Date class.  With this dataset I could now calculate the mean amount of cases per data. 
+
+I used ggplot with geom_line to create the graph. Where x = date an Y = mean_cases
+
 ```{r, message=FALSE, warning=FALSE}
 # filter for the Netherlands and calculate the average cases over time
 cases_netherlands <- gapminder_flu %>% filter(country == "Netherlands") %>% group_by(date=as.Date(date)) %>% summarise(mean_cases=mean(as.numeric(cases)))
@@ -214,13 +244,25 @@ netherlands_graph <- cases_netherlands %>%
   ggplot(aes(x = date, y = mean_cases)) +
   geom_line() +
   labs(
-    title = "flu cases over time in the netherlands",
+    title = "Mean flu cases over time in the netherlands",
     y = "cases"
   )
 netherlands_graph
 
 
 ```
+
+In the above graph you can see a few peaks, this is probaply explained by the flu season, where a lot of people get the flu.
+You can also see that around 2004 they started tracking the amount of flu cases in 2004.
+
+In the next graph I decided to track the mean amount of flu cases in europian countries in 2015
+I first had to filter for the year 2015, I did this with the "between()" function inside the "filter()" function. The between function required the first and the last day of the year 2015.
+After this I grouped the data by country and calculated the mean amount of flu cases. 
+
+With this data it was possible to create another ggplot.
+Within the "geom_bar" function it is important to put "stat = "identity"", this allows to code to make a bar graph with an y-axis and an x-axis.
+
+I also changed the angle of the country names to be vertical within "theme", if this was not done the country text would clutter.
 
 ```{r, message=FALSE, warning=FALSE}
 # string naar date veranderen
@@ -242,6 +284,13 @@ graph <-country_cases %>%
 graph
 ```
 
+In the above graph you can see Austria had a lot of flu cases in 2015
+
+In the next graph I wanted to plot the average life expectancy per europian country in 2015.
+I did this with the same filter function as the previous graph expect I calculated the mean life_expactancy after this.
+
+After this I plotted the graph in the same ggplot function. 
+
 ```{r, message=FALSE, warning=FALSE}
 # string naar date veranderen
 gapminder_flu$date <- as.Date(gapminder_flu$date)
@@ -261,4 +310,8 @@ graph_life <-country_life %>%
 # ggplot in een plotly veranderen
 graph_life
 ```
+
+In this last graph you can see the life expectancy of a few countries. In Europe the average of lays around 70 years old. 
+
+
 
