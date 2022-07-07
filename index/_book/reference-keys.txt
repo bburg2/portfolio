@@ -15,9 +15,13 @@ extras-about-the-article
 working-with-code-from-articles
 plan-for-learning-on-my-own
 what-i-want-to-learn
+where-do-you-want-the-be-in-2-years
+how-am-i-doing-with-respect-to-this-goal
+would-be-the-next-skill-to-learn
 my-plan-to-learn-python
 progress
 it-is-possible-to-track-my-progress-here-httpsgithub.combburg2learning-python
+whats-next
 sql-data-analysis
 package-creation
 description

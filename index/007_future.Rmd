@@ -5,15 +5,30 @@ date: '2022-05-06'
 ---
 # Plan for learning on my own
 
-### What I want to learn
-My school has assigned me a project to learn a skill in biological data science on my own. A minimal requirement is that I wark 32 hours on this project. To find out which skill are useful for my future interests I looked at some job applications for DNA-sequencing and analysis. Because of this I had found a few jobs that had taken my interest. These jobs all required or recommended some experience in the programming language python. Because of this learning python will be my main goal for the project. 
+## What I want to learn
+My school has assigned me a project to learn a skill in biological data science on my own. A minimal requirement is that I work 32 hours on this project. To find out which skill are useful for my future interests.
+
+To help me decide what I wanted to work on for this project school gave me a few questions:
+
+### Where do you want  the be in 2 years?
+
+With everything that I have learned on the Life Science school I have concluded that I like working in the lab with things like DNA as much as I like working on data analysis. Because of this I would like to have a job in two years that combines both. I would be fun to extract DNA sequences from a sample and after this put the DNA through a pipeline that analysis this DNA and can find what can of species it is or can spot some genetic diseases. 
+
+### How am I doing with respect to this goal?
+
+After three years of Life Science I am capable with the lab techniques side of my goals. I have worked multiple project in the lab, including a project that uses the minION to sequence meta genomic samples from DNA libraries. On the data science side of things I still have a lot to learn. I have a basic understanding of R and have also worked a bit with SQL. In the project that I worked with DNA, after we got the sequence from the minION we put the DNA-sequence to a program called EPI2ME. This program was linked to a database with a lot of data on different species of bacteria, viruses and animals. The program gave back data on what kind of species it was and the percentage of this species in the sample. For this project I would like to make a program like this on my own.
+
+### Would be the next skill to learn?
+
+I looked at some job applications for DNA-sequencing and analysis. Because of this I had found a few jobs that had taken my interest. These jobs all required or recommended some experience in the programming language python. Because of this learning python will be my main goal for the project. 
 
 ### My plan to learn python
-My plan is to first learn the basics of python using the following website https://www.learnpython.org/. I expect to learn python easily because to code R which I am experienced in looks a lot like python. After I have a basic understanding of python I want to look at DNA sequence analysis. To be specific I want to look at DNA sequences that I have generated myself with the help of the minION. In another project I am workign on I am looking at metagenomics an the sequencing of water samples. I want to look if its possible to couple my DNA sequence to a database and get the different species of bacteria that are in the water sample using python. 
 
-### progress
+My plan is to first learn the basics of python using the following website https://www.learnpython.org/. I expect to learn python easily because to code R which I am experienced in looks a lot like python. After I have a basic understanding of python I want to look at DNA sequence analysis. To be specific I want to look at DNA sequences that I have generated myself with the help of the minION. In another project I am working on I am looking at meta genomics an the sequencing of water samples. I want to look if its possible to couple my DNA sequence to a database and get the different species of bacteria that are in the water sample using python. 
 
-## it is possible to track my progress here: https://github.com/bburg2/Learning-python
+## progress
+
+### it is possible to track my progress here: https://github.com/bburg2/Learning-python
 
 First I started learning the basics of python, this included:
 
@@ -47,7 +62,7 @@ These tools Included:
 * pandas
 
 After this I started some basic DNA analysis of one of the first DNA sequences that I have generated with the help of the minION.
-This was a control sample containing lambda DNA. The output of sequencing a lambda library was a fasq file containing the sequencing data.
+This was a control sample containing lambda DNA. The output of sequencing a lambda library was a fastq file containing the sequencing data.
 
 I installed a [tool](https://github.com/reneshbedre/bioinfokit) that could analyse DNA using the following code in the terminal:
 
@@ -85,4 +100,23 @@ DNA["G count"] = g_base
 print(DNA)
 
 ```
+
+## What's next?
+
+The next thing I want the program to do is show some basic quality control data from the fastq file, this includes:
+
+* Reads analysed
+
+* Average Q-score
+
+* Average sequencing length
+
+* Some bar plots based on Q-score and sequencing length.
+
+I have already found a python package that can do some of these things or get me started at: https://biopython.org/docs/1.75/api/Bio.SeqIO.QualityIO.html
+
+After I have done some quality analysis on the fastq file, I can now align the data to DNA from databases. For this I will need to connect to biological databases.
+I have found a tutorial on how to this here: http://biopython.org/DIST/docs/tutorial/Tutorial.html#sec15
+
+After I have done the alignment I would like the program to display what kind of species are in the sample, ideally the program will give the same results as EPI2ME.
 
